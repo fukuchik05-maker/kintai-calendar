@@ -198,6 +198,14 @@ function renderCalendar() {
           memberRow.appendChild(makeTimePart(record.clockIn, isEarly));
           memberRow.appendChild(document.createTextNode("-"));
           memberRow.appendChild(makeTimePart(record.clockOut, isLate));
+
+          var overtimeMin = Calc.calcOvertimeMinutes(record.clockIn, record.clockOut, record.status);
+          if (overtimeMin > 0) {
+            var overtimeSpan = document.createElement("span");
+            overtimeSpan.className = "overtime-part";
+            overtimeSpan.textContent = " +" + Calc.minutesToHoursLabel(overtimeMin);
+            memberRow.appendChild(overtimeSpan);
+          }
         } else if (record) {
           memberRow.appendChild(document.createTextNode(record.status));
         }
