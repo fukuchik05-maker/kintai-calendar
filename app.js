@@ -202,8 +202,8 @@ function renderCalendar() {
           var overtimeMin = Calc.calcOvertimeMinutes(record.clockIn, record.clockOut, record.status);
           if (overtimeMin > 0) {
             var overtimeSpan = document.createElement("span");
-            overtimeSpan.className = "overtime-part";
-            overtimeSpan.textContent = " +" + Calc.minutesToHoursLabel(overtimeMin);
+            overtimeSpan.className = "overtime-badge";
+            overtimeSpan.textContent = "+" + Calc.minutesToHoursLabel(overtimeMin);
             memberRow.appendChild(overtimeSpan);
           }
         } else if (record) {
