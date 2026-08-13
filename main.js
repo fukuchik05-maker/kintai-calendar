@@ -31,4 +31,9 @@ document.addEventListener("DOMContentLoaded", function () {
       e.target.value = "";
     }
   });
+
+  document.getElementById("versionInfoBtn").addEventListener("click", openVersionModal);
+  document.getElementById("versionCloseBtn").addEventListener("click", closeVersionModal);
+  document.getElementById("versionTabBtn").addEventListener("click", function () { switchVersionTab("version"); });
+  document.getElementById("historyTabBtn").addEventListener("click", function () { switchVersionTab("history"); });
 });

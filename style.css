@@ -56,8 +56,8 @@ body {
 }
 .cell-member-row.status-出勤 { background: #e5f5e5; }
 .cell-member-row.status-休日 { background: #e5e5e5; }
-.cell-member-row.status-有給 { background: #e5ecff; }
-.cell-member-row.status-半休 { background: #eaf0ff; }
+.cell-member-row.status-有給 { background: #ecdcff; }
+.cell-member-row.status-半休 { background: #f5ecff; }
 .cell-member-row.status-欠勤 { background: #ffe5e5; }
 .cell-member-row.status-その他 { background: #fff7d9; }
 .overtime-part { color: #cc3300; font-weight: bold; }
@@ -93,6 +93,22 @@ body {
   max-height: 90vh;
   overflow-y: auto;
 }
+.tab-buttons { display: flex; gap: 4px; border-bottom: 1px solid #ddd; margin-bottom: 12px; }
+.tab-btn {
+  padding: 8px 14px;
+  font-size: 15px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+}
+.tab-btn.active { border-bottom-color: #3366ff; font-weight: bold; color: #3366ff; }
+.tab-content.hidden { display: none; }
+.history-list { list-style: none; padding: 0; margin: 0; }
+.history-item { padding: 8px 0; border-bottom: 1px solid #eee; }
+.history-item .history-version { font-weight: bold; margin-right: 8px; }
+.history-item .history-date { color: #888; font-size: 14px; }
+
 .modal label { display: block; margin-bottom: 10px; }
 .modal input, .modal select, .modal textarea { width: 100%; padding: 8px; margin-top: 4px; font-size: 16px; }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }

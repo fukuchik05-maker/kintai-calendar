@@ -161,3 +161,46 @@ function addMemberFromForm() {
   grantedInput.value = "";
   renderMemberTable();
 }
+
+function openVersionModal() {
+  renderVersionTab();
+  renderHistoryTab();
+  switchVersionTab("version");
+  document.getElementById("versionModal").classList.remove("hidden");
+}
+
+function closeVersionModal() {
+  document.getElementById("versionModal").classList.add("hidden");
+}
+
+function switchVersionTab(tab) {
+  var isVersion = tab === "version";
+  document.getElementById("versionTabBtn").classList.toggle("active", isVersion);
+  document.getElementById("historyTabBtn").classList.toggle("active", !isVersion);
+  document.getElementById("versionTabContent").classList.toggle("hidden", !isVersion);
+  document.getElementById("historyTabContent").classList.toggle("hidden", isVersion);
+}
+
+function renderVersionTab() {
+  var content = document.getElementById("versionTabContent");
+  content.innerHTML =
+    "<p>現在のバージョン: <strong>v" + APP_VERSION + "</strong></p>" +
+    "<p>最終更新日: " + CHANGELOG[0].date + "</p>";
+}
+
+function renderHistoryTab() {
+  var content = document.getElementById("historyTabContent");
+  var list = document.createElement("ul");
+  list.className = "history-list";
+  CHANGELOG.forEach(function (entry) {
+    var li = document.createElement("li");
+    li.className = "history-item";
+    li.innerHTML =
+      "<span class=\"history-version\">v" + entry.version + "</span>" +
+      "<span class=\"history-date\">" + entry.date + "</span>" +
+      "<div>" + entry.notes + "</div>";
+    list.appendChild(li);
+  });
+  content.innerHTML = "";
+  content.appendChild(list);
+}

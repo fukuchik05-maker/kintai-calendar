@@ -22,6 +22,7 @@
       <button id="backupExportBtn">バックアップ書き出し</button>
       <button id="backupImportBtn">バックアップ読み込み</button>
       <input type="file" id="backupFileInput" accept="application/json" style="display:none">
+      <button id="versionInfoBtn">バージョン情報</button>
     </div>
   </header>
 
@@ -89,7 +90,23 @@
     </div>
   </div>
 
+  <div id="versionModal" class="modal-overlay hidden">
+    <div class="modal">
+      <h2>バージョン情報</h2>
+      <div class="tab-buttons">
+        <button id="versionTabBtn" class="tab-btn">バージョン情報</button>
+        <button id="historyTabBtn" class="tab-btn">更新履歴</button>
+      </div>
+      <div id="versionTabContent" class="tab-content"></div>
+      <div id="historyTabContent" class="tab-content hidden"></div>
+      <div class="modal-actions">
+        <button id="versionCloseBtn">閉じる</button>
+      </div>
+    </div>
+  </div>
+
   <script src="holidays.js"></script>
+  <script src="changelog.js"></script>
   <script src="calc.js"></script>
   <script src="storage.js"></script>
   <script src="app.js"></script>
