@@ -1,4 +1,5 @@
 * { box-sizing: border-box; }
+html, body { height: 100%; }
 body {
   font-family: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
   margin: 0;
@@ -6,6 +7,10 @@ body {
   background: #f5f6f8;
   color: #222;
   font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .app-header {
@@ -14,6 +19,15 @@ body {
   align-items: center;
   gap: 8px;
   margin-bottom: 12px;
+  flex: 0 0 auto;
+}
+
+main {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 .app-header button { padding: 8px 14px; font-size: 16px; cursor: pointer; }
 .nav span { margin: 0 8px; font-weight: bold; font-size: 20px; }
@@ -30,25 +44,29 @@ body {
 .app-title .app-title-version { font-size: 16px; font-weight: normal; color: #888; margin-left: 6px; }
 
 .calendar-grid {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto;
   gap: 3px;
   background: #fff;
   padding: 6px;
   border-radius: 8px;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 .calendar-row {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 3px;
+  min-height: 0;
 }
 .calendar-header-cell { text-align: center; font-weight: bold; font-size: 15px; padding: 4px; }
 .calendar-cell {
   border: 1px solid #ddd;
-  min-height: 75px;
   padding: 4px;
   border-radius: 4px;
   background: #fff;
+  min-height: 0;
+  overflow-y: auto;
 }
 .cell-empty { background: #f0f0f0; border: none; }
 .cell-saturday { background: #eaf3ff; }
@@ -90,7 +108,7 @@ body {
 }
 .cell-add-row:hover { color: #3366ff; }
 
-.summary-panel { margin-top: 12px; background: #fff; padding: 12px; border-radius: 8px; }
+.summary-panel { flex: 0 0 auto; background: #fff; padding: 12px; border-radius: 8px; overflow-x: auto; }
 .summary-table { border-collapse: collapse; width: 100%; font-size: 16px; }
 .summary-table th, .summary-table td { border: 1px solid #ddd; padding: 8px 10px; text-align: center; }
 .cell-overtime { color: #cc3300; font-weight: bold; }
