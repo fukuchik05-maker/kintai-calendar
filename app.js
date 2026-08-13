@@ -185,6 +185,13 @@ function renderCalendar() {
           memberRow.appendChild(document.createTextNode(record.status));
         }
 
+        if (record && record.note) {
+          var noteSpan = document.createElement("span");
+          noteSpan.className = "cell-note";
+          noteSpan.textContent = " " + record.note;
+          memberRow.appendChild(noteSpan);
+        }
+
         memberRow.addEventListener("click", (function (dkClosure, memberIdClosure) {
           return function () {
             if (typeof openEditModal === "function") openEditModal(dkClosure, memberIdClosure);

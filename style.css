@@ -61,6 +61,7 @@ body {
 .cell-member-row.status-欠勤 { background: #ffe5e5; }
 .cell-member-row.status-その他 { background: #fff7d9; }
 .overtime-part { color: #cc3300; font-weight: bold; }
+.cell-note { color: #666; font-style: italic; word-break: break-all; }
 
 .cell-add-row {
   font-size: 14px;
