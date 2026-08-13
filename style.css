@@ -1,0 +1,90 @@
+* { box-sizing: border-box; }
+body {
+  font-family: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  margin: 0;
+  padding: 16px;
+  background: #f5f6f8;
+  color: #222;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.app-header button { padding: 6px 12px; cursor: pointer; }
+.nav span { margin: 0 8px; font-weight: bold; }
+
+.calendar-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #fff;
+  padding: 8px;
+  border-radius: 8px;
+}
+.calendar-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.calendar-header-cell { text-align: center; font-weight: bold; padding: 4px; }
+.calendar-cell {
+  border: 1px solid #ddd;
+  min-height: 90px;
+  padding: 4px;
+  border-radius: 4px;
+  background: #fff;
+}
+.cell-empty { background: #f0f0f0; border: none; }
+.cell-saturday { background: #eaf3ff; }
+.cell-sunday-holiday { background: #fdeaea; }
+.cell-today { outline: 2px solid #3366ff; }
+.cell-date-label { font-weight: bold; font-size: 12px; margin-bottom: 4px; }
+
+.cell-member-list { display: flex; flex-direction: column; gap: 2px; }
+.cell-member-row {
+  font-size: 11px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  cursor: pointer;
+  background: #f0f0f0;
+}
+.cell-member-row.status-出勤 { background: #e5f5e5; }
+.cell-member-row.status-休日 { background: #e5e5e5; }
+.cell-member-row.status-有給 { background: #e5ecff; }
+.cell-member-row.status-半休 { background: #eaf0ff; }
+.cell-member-row.status-欠勤 { background: #ffe5e5; }
+.cell-member-row.status-その他 { background: #fff7d9; }
+.cell-member-row.has-overtime { color: #cc3300; font-weight: bold; }
+
+.summary-panel { margin-top: 16px; background: #fff; padding: 12px; border-radius: 8px; }
+.summary-table { border-collapse: collapse; width: 100%; }
+.summary-table th, .summary-table td { border: 1px solid #ddd; padding: 6px 8px; text-align: center; }
+.cell-overtime { color: #cc3300; font-weight: bold; }
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.hidden { display: none; }
+.modal {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  min-width: 320px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal label { display: block; margin-bottom: 10px; }
+.modal input, .modal select, .modal textarea { width: 100%; padding: 6px; margin-top: 4px; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+.add-member-row { display: flex; gap: 8px; margin-top: 12px; }

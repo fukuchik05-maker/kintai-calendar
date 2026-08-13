@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>勤怠管理カレンダー</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="nav">
+      <button id="prevMonthBtn">◀</button>
+      <span id="currentMonthLabel"></span>
+      <button id="nextMonthBtn">▶</button>
+      <button id="todayBtn">今月</button>
+    </div>
+    <div class="actions">
+      <button id="memberSettingsBtn">メンバー設定</button>
+      <button id="reportBtn">月報</button>
+      <button id="csvExportBtn">CSV出力</button>
+      <button id="backupExportBtn">バックアップ書き出し</button>
+      <button id="backupImportBtn">バックアップ読み込み</button>
+      <input type="file" id="backupFileInput" accept="application/json" style="display:none">
+    </div>
+  </header>
+
+  <main>
+    <div id="calendarGrid" class="calendar-grid"></div>
+    <section id="summaryPanel" class="summary-panel"></section>
+  </main>
+
+  <div id="editModal" class="modal-overlay hidden">
+    <div class="modal">
+      <h2 id="editModalTitle"></h2>
+      <label>ステータス
+        <select id="editStatus">
+          <option value="出勤">出勤</option>
+          <option value="休日">休日</option>
+          <option value="有給">有給</option>
+          <option value="半休">半休</option>
+          <option value="欠勤">欠勤</option>
+          <option value="その他">その他</option>
+        </select>
+      </label>
+      <div id="editTimeFields">
+        <label>出勤時刻 <input type="time" id="editClockIn"></label>
+        <label>退勤時刻 <input type="time" id="editClockOut"></label>
+        <label>休憩(分) <input type="number" id="editBreakMin" min="0" step="5"></label>
+        <label>時間有給(時間) <input type="number" id="editHourlyLeave" min="0" step="0.5"></label>
+      </div>
+      <label>備考 <textarea id="editNote"></textarea></label>
+      <div class="modal-actions">
+        <button id="editSaveBtn">保存</button>
+        <button id="editDeleteBtn">削除</button>
+        <button id="editCancelBtn">キャンセル</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="memberModal" class="modal-overlay hidden">
+    <div class="modal">
+      <h2>メンバー設定</h2>
+      <table id="memberTable">
+        <thead><tr><th>氏名</th><th>有給付与日数</th><th></th></tr></thead>
+        <tbody id="memberTableBody"></tbody>
+      </table>
+      <div class="add-member-row">
+        <input type="text" id="newMemberName" placeholder="氏名">
+        <input type="number" id="newMemberGranted" placeholder="付与日数" min="0" step="0.5">
+        <button id="addMemberBtn">追加</button>
+      </div>
+      <div class="modal-actions">
+        <button id="memberCloseBtn">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="reportModal" class="modal-overlay hidden">
+    <div class="modal">
+      <h2 id="reportTitle">月報</h2>
+      <label>対象メンバー
+        <select id="reportMemberSelect"></select>
+      </label>
+      <div id="reportContent"></div>
+      <div class="modal-actions">
+        <button id="reportCloseBtn">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="holidays.js"></script>
+  <script src="calc.js"></script>
+  <script src="storage.js"></script>
+  <script src="app.js"></script>
+  <script src="modals.js"></script>
+  <script src="summary.js"></script>
+  <script src="io.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

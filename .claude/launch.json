@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "kintai-dev",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:\\Users\\GM\\AppData\\Local\\Temp\\claude\\C--Users-GM-Desktop-csv-kin\\96003bb3-1924-44b1-8466-b75dd7cddca2\\scratchpad\\dev-server.js", "C:\\Users\\GM\\Desktop\\csv\\kin"],
+      "port": 8420,
+      "autoPort": true
+    }
+  ]
+}
