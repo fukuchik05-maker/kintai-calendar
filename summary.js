@@ -69,14 +69,15 @@ function renderSummary() {
 }
 
 function openReportModal() {
-  var select = document.getElementById("reportMemberSelect");
-  select.innerHTML = "";
-  App.state.data.members.forEach(function (member) {
-    var opt = document.createElement("option");
-    opt.value = member.id;
-    opt.textContent = member.name;
-    select.appendChild(opt);
-  });
+  var members = App.state.data.members;
+  var stillValid = members.some(function (m) { return m.id === App.state.reportActiveMemberId; });
+  if (members.length > 0 && !stillValid) {
+    App.state.reportActiveMemberId = members[0].id;
+  }
+  if (members.length === 0) {
+    App.state.reportActiveMemberId = null;
+  }
+  renderReportTabs();
   renderReportContent();
   document.getElementById("reportModal").classList.remove("hidden");
 }
@@ -85,9 +86,29 @@ function closeReportModal() {
   document.getElementById("reportModal").classList.add("hidden");
 }
 
+function switchReportMember(memberId) {
+  App.state.reportActiveMemberId = memberId;
+  renderReportTabs();
+  renderReportContent();
+}
+
+function renderReportTabs() {
+  var container = document.getElementById("reportMemberTabs");
+  container.innerHTML = "";
+  App.state.data.members.forEach(function (member) {
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "tab-btn" + (member.id === App.state.reportActiveMemberId ? " active" : "");
+    btn.textContent = member.name;
+    btn.addEventListener("click", (function (memberIdClosure) {
+      return function () { switchReportMember(memberIdClosure); };
+    })(member.id));
+    container.appendChild(btn);
+  });
+}
+
 function renderReportContent() {
-  var select = document.getElementById("reportMemberSelect");
-  var memberId = select.value;
+  var memberId = App.state.reportActiveMemberId;
   var member = null;
   for (var i = 0; i < App.state.data.members.length; i++) {
     if (App.state.data.members[i].id === memberId) { member = App.state.data.members[i]; break; }

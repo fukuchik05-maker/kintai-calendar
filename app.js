@@ -3,7 +3,8 @@ var App = {
     year: null,
     month: null,
     data: null,
-    editingContext: null
+    editingContext: null,
+    reportActiveMemberId: null
   }
 };
 

@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("reportBtn").addEventListener("click", openReportModal);
   document.getElementById("reportCloseBtn").addEventListener("click", closeReportModal);
-  document.getElementById("reportMemberSelect").addEventListener("change", renderReportContent);
 
   document.getElementById("editStatus").addEventListener("change", onEditStatusChange);
   document.getElementById("editSaveBtn").addEventListener("click", saveEditModal);
