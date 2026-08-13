@@ -74,3 +74,74 @@ function deleteEditRecord() {
   closeEditModal();
   persistAndRerender();
 }
+
+function openMemberModal() {
+  renderMemberTable();
+  document.getElementById("memberModal").classList.remove("hidden");
+}
+
+function closeMemberModal() {
+  document.getElementById("memberModal").classList.add("hidden");
+  renderAll();
+}
+
+function renderMemberTable() {
+  var tbody = document.getElementById("memberTableBody");
+  tbody.innerHTML = "";
+
+  App.state.data.members.forEach(function (member) {
+    var tr = document.createElement("tr");
+
+    var nameTd = document.createElement("td");
+    var nameInput = document.createElement("input");
+    nameInput.type = "text";
+    nameInput.value = member.name;
+    nameInput.addEventListener("change", function () {
+      Storage.updateMember(App.state.data, member.id, nameInput.value, member.grantedLeaveDays);
+      Storage.saveData(App.state.data);
+    });
+    nameTd.appendChild(nameInput);
+
+    var grantedTd = document.createElement("td");
+    var grantedInput = document.createElement("input");
+    grantedInput.type = "number";
+    grantedInput.min = "0";
+    grantedInput.step = "0.5";
+    grantedInput.value = member.grantedLeaveDays;
+    grantedInput.addEventListener("change", function () {
+      var value = parseFloat(grantedInput.value) || 0;
+      Storage.updateMember(App.state.data, member.id, member.name, value);
+      Storage.saveData(App.state.data);
+    });
+    grantedTd.appendChild(grantedInput);
+
+    var actionTd = document.createElement("td");
+    var removeBtn = document.createElement("button");
+    removeBtn.textContent = "削除";
+    removeBtn.addEventListener("click", function () {
+      if (!confirm(member.name + " を削除しますか？関連する記録も削除されます。")) return;
+      Storage.removeMember(App.state.data, member.id);
+      Storage.saveData(App.state.data);
+      renderMemberTable();
+    });
+    actionTd.appendChild(removeBtn);
+
+    tr.appendChild(nameTd);
+    tr.appendChild(grantedTd);
+    tr.appendChild(actionTd);
+    tbody.appendChild(tr);
+  });
+}
+
+function addMemberFromForm() {
+  var nameInput = document.getElementById("newMemberName");
+  var grantedInput = document.getElementById("newMemberGranted");
+  var name = nameInput.value.trim();
+  if (!name) return;
+  var granted = parseFloat(grantedInput.value) || 0;
+  Storage.addMember(App.state.data, name, granted);
+  Storage.saveData(App.state.data);
+  nameInput.value = "";
+  grantedInput.value = "";
+  renderMemberTable();
+}
