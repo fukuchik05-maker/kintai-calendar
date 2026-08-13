@@ -42,6 +42,46 @@
     return sign + h + ":" + (m < 10 ? "0" + m : m);
   }
 
+  function calcLeaveConsumedDays(record) {
+    var days = 0;
+    if (record.status === "有給") days += 1;
+    if (record.status === "半休") days += 0.5;
+    if (record.hourlyLeaveHours) days += record.hourlyLeaveHours / 8;
+    return days;
+  }
+
+  function calcLeaveBalance(grantedDays, records) {
+    var consumed = 0;
+    for (var i = 0; i < records.length; i++) {
+      consumed += calcLeaveConsumedDays(records[i]);
+    }
+    return grantedDays - consumed;
+  }
+
+  function csvEscape(value) {
+    var s = value === null || value === undefined ? "" : String(value);
+    if (/[",\r\n]/.test(s)) {
+      s = '"' + s.replace(/"/g, '""') + '"';
+    }
+    return s;
+  }
+
+  function buildCsvContent(rows) {
+    var header = ["日付", "氏名", "ステータス", "出勤", "退勤", "休憩(分)", "時間有給(時間)", "実労働時間", "残業時間", "備考"];
+    var lines = [header.join(",")];
+    rows.forEach(function (r) {
+      var cells = [
+        r.date, r.name, r.status,
+        r.clockIn || "", r.clockOut || "",
+        r.breakMin !== null && r.breakMin !== undefined ? r.breakMin : "",
+        r.hourlyLeaveHours || 0,
+        r.workLabel || "", r.overtimeLabel || "", r.note || ""
+      ];
+      lines.push(cells.map(csvEscape).join(","));
+    });
+    return lines.join("\r\n");
+  }
+
   var api = {
     timeToMinutes: timeToMinutes,
     STANDARD_START_MIN: STANDARD_START_MIN,
@@ -49,7 +89,11 @@
     calcActualWorkMinutes: calcActualWorkMinutes,
     floorTo15: floorTo15,
     calcOvertimeMinutes: calcOvertimeMinutes,
-    minutesToHoursLabel: minutesToHoursLabel
+    minutesToHoursLabel: minutesToHoursLabel,
+    calcLeaveConsumedDays: calcLeaveConsumedDays,
+    calcLeaveBalance: calcLeaveBalance,
+    csvEscape: csvEscape,
+    buildCsvContent: buildCsvContent
   };
 
   if (typeof module !== "undefined" && module.exports) {

@@ -61,4 +61,39 @@ test("minutesToHoursLabel formats minutes as H:MM", function () {
   assert.strictEqual(Calc.minutesToHoursLabel(null), "");
 });
 
+test("calcLeaveConsumedDays counts 有給=1, 半休=0.5, 時間有給=hours/8", function () {
+  assert.strictEqual(Calc.calcLeaveConsumedDays({ status: "有給" }), 1);
+  assert.strictEqual(Calc.calcLeaveConsumedDays({ status: "半休" }), 0.5);
+  assert.strictEqual(Calc.calcLeaveConsumedDays({ status: "出勤", hourlyLeaveHours: 4 }), 0.5);
+  assert.strictEqual(Calc.calcLeaveConsumedDays({ status: "欠勤" }), 0);
+  assert.strictEqual(Calc.calcLeaveConsumedDays({ status: "出勤" }), 0);
+});
+
+test("calcLeaveBalance subtracts consumed days from granted days", function () {
+  var records = [
+    { status: "有給" },
+    { status: "半休" },
+    { status: "出勤", hourlyLeaveHours: 4 },
+    { status: "欠勤" }
+  ];
+  assert.strictEqual(Calc.calcLeaveBalance(20, records), 20 - 1 - 0.5 - 0.5);
+});
+
+test("csvEscape wraps values containing comma/quote/newline in quotes", function () {
+  assert.strictEqual(Calc.csvEscape("田中"), "田中");
+  assert.strictEqual(Calc.csvEscape("a,b"), '"a,b"');
+  assert.strictEqual(Calc.csvEscape('say "hi"'), '"say ""hi"""');
+  assert.strictEqual(Calc.csvEscape(null), "");
+  assert.strictEqual(Calc.csvEscape(0), "0");
+});
+
+test("buildCsvContent builds header + rows joined by CRLF", function () {
+  var csv = Calc.buildCsvContent([
+    { date: "2026-08-13", name: "田中", status: "出勤", clockIn: "08:30", clockOut: "17:30", breakMin: 60, hourlyLeaveHours: 0, workLabel: "8:00", overtimeLabel: "0:00", note: "" }
+  ]);
+  var lines = csv.split("\r\n");
+  assert.strictEqual(lines[0], "日付,氏名,ステータス,出勤,退勤,休憩(分),時間有給(時間),実労働時間,残業時間,備考");
+  assert.strictEqual(lines[1], "2026-08-13,田中,出勤,08:30,17:30,60,0,8:00,0:00,");
+});
+
 console.log("calc.test.js done");
