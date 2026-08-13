@@ -1,3 +1,13 @@
+// 日付コメントの先頭が「16:30 部門長」のような「時刻+本文」の場合、時刻と本文を分けて返す。
+// 時刻から始まっていない場合は本文のみとして扱う。
+function splitDayNoteTimeText(note) {
+  var match = /^(\d{1,2}:\d{2})\s*(.*)$/.exec(note);
+  if (match) {
+    return { time: match[1], text: match[2] };
+  }
+  return { time: "", text: note };
+}
+
 // 一覧表示(ガンチャート風): 縦=メンバー、横=1日〜月末までの日付を並べたシフト表。
 function renderGanttView() {
   var year = App.state.year, month = App.state.month;
@@ -40,11 +50,23 @@ function renderGanttView() {
 
     var dayNote = Storage.getDayNote(App.state.data, dk);
     if (dayNote) {
-      var noteDiv = document.createElement("div");
-      noteDiv.className = "gantt-daynote";
-      noteDiv.textContent = dayNote;
-      noteDiv.title = dayNote;
-      th.appendChild(noteDiv);
+      var noteParts = splitDayNoteTimeText(dayNote);
+
+      if (noteParts.time) {
+        var timeDiv = document.createElement("div");
+        timeDiv.className = "gantt-daynote-time";
+        timeDiv.textContent = noteParts.time;
+        timeDiv.title = dayNote;
+        th.appendChild(timeDiv);
+      }
+
+      if (noteParts.text) {
+        var textDiv = document.createElement("div");
+        textDiv.className = "gantt-daynote-text";
+        textDiv.textContent = noteParts.text;
+        textDiv.title = dayNote;
+        th.appendChild(textDiv);
+      }
     }
 
     th.addEventListener("click", (function (dkClosure) {

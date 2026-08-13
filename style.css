@@ -187,17 +187,17 @@ body {
   vertical-align: top;
 }
 .gantt-weekday { font-size: 10px; font-weight: normal; color: #666; }
-.gantt-daynote {
+.gantt-daynote-time,
+.gantt-daynote-text {
   font-size: 9px;
-  font-weight: normal;
-  font-style: italic;
   color: #3366ff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 52px;
-  margin-top: 2px;
 }
+.gantt-daynote-time { font-weight: bold; margin-top: 2px; }
+.gantt-daynote-text { font-weight: normal; font-style: italic; }
 .gantt-cell {
   min-width: 56px;
   width: 56px;
