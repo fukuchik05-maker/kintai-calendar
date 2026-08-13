@@ -46,6 +46,51 @@ function changeMonth(delta) {
   renderAll();
 }
 
+function fillWeekdaysForMonth() {
+  var year = App.state.year, month = App.state.month;
+  var total = daysInMonth(year, month);
+  var firstDay = new Date(year, month - 1, 1);
+  var startWeekday = firstDay.getDay();
+
+  var targetKeys = [];
+  for (var d = 1; d <= total; d++) {
+    var weekday = (startWeekday + d - 1) % 7;
+    var dk = dateKeyOf(year, month, d);
+    if (weekday === 0 || weekday === 6) continue;
+    if (Holidays.isHoliday(dk)) continue;
+    targetKeys.push(dk);
+  }
+
+  // 未入力の組み合わせ(日付×メンバー)を先に数える。書き込みは確認後に行う
+  var pending = [];
+  targetKeys.forEach(function (dk) {
+    App.state.data.members.forEach(function (member) {
+      if (Storage.getRecord(App.state.data, dk, member.id)) return; // 既存の記録は上書きしない
+      pending.push({ dateKey: dk, memberId: member.id });
+    });
+  });
+
+  if (pending.length === 0) {
+    alert("入力対象がありませんでした(すべての平日に記録済みです)。");
+    return;
+  }
+  if (!confirm(year + "年" + month + "月の平日のうち、未入力の" + pending.length + "件に 08:30-17:30 出勤を入力します。よろしいですか？")) {
+    return;
+  }
+
+  pending.forEach(function (item) {
+    Storage.setRecord(App.state.data, item.dateKey, item.memberId, {
+      status: "出勤",
+      clockIn: "08:30",
+      clockOut: "17:30",
+      breakMin: 60,
+      hourlyLeaveHours: 0,
+      note: ""
+    });
+  });
+  persistAndRerender();
+}
+
 function goToToday() {
   var now = new Date();
   App.state.year = now.getFullYear();

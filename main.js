@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("prevMonthBtn").addEventListener("click", function () { changeMonth(-1); });
   document.getElementById("nextMonthBtn").addEventListener("click", function () { changeMonth(1); });
   document.getElementById("todayBtn").addEventListener("click", goToToday);
+  document.getElementById("fillWeekdaysBtn").addEventListener("click", fillWeekdaysForMonth);
 
   document.getElementById("memberSettingsBtn").addEventListener("click", openMemberModal);
   document.getElementById("memberCloseBtn").addEventListener("click", closeMemberModal);
