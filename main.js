@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
   initState();
   renderAll();
 
+  document.getElementById("appTitle").innerHTML =
+    "勤怠管理カレンダー<span class=\"app-title-version\">v" + APP_VERSION + "</span>";
+
   document.getElementById("prevMonthBtn").addEventListener("click", function () { changeMonth(-1); });
   document.getElementById("nextMonthBtn").addEventListener("click", function () { changeMonth(1); });
   document.getElementById("todayBtn").addEventListener("click", goToToday);

@@ -9,15 +9,25 @@ body {
 }
 
 .app-header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 16px;
 }
 .app-header button { padding: 8px 14px; font-size: 16px; cursor: pointer; }
 .nav span { margin: 0 8px; font-weight: bold; font-size: 20px; }
+.nav { display: flex; align-items: center; flex-wrap: wrap; justify-self: start; }
+.actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; justify-self: end; justify-content: flex-end; }
+.app-title {
+  justify-self: center;
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  white-space: nowrap;
+  text-align: center;
+}
+.app-title .app-title-version { font-size: 15px; font-weight: normal; color: #888; margin-left: 6px; }
 
 .calendar-grid {
   display: flex;
