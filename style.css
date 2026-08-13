@@ -5,7 +5,7 @@ body {
   padding: 16px;
   background: #f5f6f8;
   color: #222;
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .app-header {
@@ -15,19 +15,19 @@ body {
   gap: 8px;
   margin-bottom: 16px;
 }
-.app-header button { padding: 8px 14px; font-size: 16px; cursor: pointer; }
-.nav span { margin: 0 8px; font-weight: bold; font-size: 20px; }
+.app-header button { padding: 9px 15px; font-size: 17px; cursor: pointer; }
+.nav span { margin: 0 8px; font-weight: bold; font-size: 22px; }
 .nav { display: flex; align-items: center; flex-wrap: wrap; justify-self: start; }
 .actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; justify-self: end; justify-content: flex-end; }
 .app-title {
   justify-self: center;
-  font-size: 22px;
+  font-size: 25px;
   font-weight: bold;
   color: #333;
   white-space: nowrap;
   text-align: center;
 }
-.app-title .app-title-version { font-size: 15px; font-weight: normal; color: #888; margin-left: 6px; }
+.app-title .app-title-version { font-size: 16px; font-weight: normal; color: #888; margin-left: 6px; }
 
 .calendar-grid {
   display: flex;
@@ -42,11 +42,11 @@ body {
   grid-template-columns: repeat(7, 1fr);
   gap: 4px;
 }
-.calendar-header-cell { text-align: center; font-weight: bold; font-size: 16px; padding: 6px; }
+.calendar-header-cell { text-align: center; font-weight: bold; font-size: 18px; padding: 8px; }
 .calendar-cell {
   border: 1px solid #ddd;
-  min-height: 100px;
-  padding: 6px;
+  min-height: 135px;
+  padding: 8px;
   border-radius: 4px;
   background: #fff;
 }
@@ -54,10 +54,10 @@ body {
 .cell-saturday { background: #eaf3ff; }
 .cell-sunday-holiday { background: #fdeaea; }
 .cell-today { outline: 2px solid #3366ff; }
-.cell-date-label { font-weight: bold; font-size: 16px; margin-bottom: 6px; }
+.cell-date-label { font-weight: bold; font-size: 18px; margin-bottom: 8px; }
 .day-note {
   font-weight: normal;
-  font-size: 13px;
+  font-size: 15px;
   font-style: italic;
   color: #3366ff;
   cursor: pointer;
@@ -65,10 +65,10 @@ body {
 .day-note-empty { color: #ccc; }
 .day-note:hover { text-decoration: underline; }
 
-.cell-member-list { display: flex; flex-direction: column; gap: 3px; }
+.cell-member-list { display: flex; flex-direction: column; gap: 4px; }
 .cell-member-row {
-  font-size: 14px;
-  padding: 3px 5px;
+  font-size: 16px;
+  padding: 4px 6px;
   border-radius: 3px;
   cursor: pointer;
   background: #f0f0f0;
@@ -83,16 +83,16 @@ body {
 .cell-note { color: #666; font-style: italic; word-break: break-all; }
 
 .cell-add-row {
-  font-size: 14px;
+  font-size: 16px;
   color: #999;
   cursor: pointer;
-  padding: 3px 5px;
+  padding: 4px 6px;
 }
 .cell-add-row:hover { color: #3366ff; }
 
-.summary-panel { margin-top: 16px; background: #fff; padding: 16px; border-radius: 8px; }
-.summary-table { border-collapse: collapse; width: 100%; font-size: 17px; }
-.summary-table th, .summary-table td { border: 1px solid #ddd; padding: 10px 12px; text-align: center; }
+.summary-panel { margin-top: 16px; background: #fff; padding: 18px; border-radius: 8px; }
+.summary-table { border-collapse: collapse; width: 100%; font-size: 19px; }
+.summary-table th, .summary-table td { border: 1px solid #ddd; padding: 12px 14px; text-align: center; }
 .cell-overtime { color: #cc3300; font-weight: bold; }
 
 .modal-overlay {
