@@ -13,6 +13,7 @@
       <span id="currentMonthLabel"></span>
       <button id="nextMonthBtn">▶</button>
       <button id="todayBtn">今月</button>
+      <button id="viewToggleBtn">一覧表示</button>
     </div>
     <div class="app-title" id="appTitle"></div>
     <div class="actions">
@@ -29,6 +30,9 @@
 
   <main>
     <div id="calendarGrid" class="calendar-grid"></div>
+    <div id="ganttWrap" class="gantt-wrap hidden">
+      <table id="ganttTable" class="gantt-table"></table>
+    </div>
     <section id="summaryPanel" class="summary-panel"></section>
   </main>
 
@@ -114,6 +118,7 @@
   <script src="storage.js"></script>
   <script src="app.js"></script>
   <script src="modals.js"></script>
+  <script src="gantt.js"></script>
   <script src="summary.js"></script>
   <script src="io.js"></script>
   <script src="main.js"></script>

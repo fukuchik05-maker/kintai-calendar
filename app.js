@@ -3,7 +3,8 @@ var App = {
     year: null,
     month: null,
     data: null,
-    editingContext: null
+    editingContext: null,
+    viewMode: "calendar" // "calendar" または "gantt"
   }
 };
 
@@ -40,8 +41,21 @@ function persistAndRerender() {
 }
 
 function renderAll() {
-  renderCalendar();
+  document.getElementById("currentMonthLabel").textContent = App.state.year + "年" + App.state.month + "月";
+  if (App.state.viewMode === "gantt") {
+    if (typeof renderGanttView === "function") renderGanttView();
+  } else {
+    renderCalendar();
+  }
   if (typeof renderSummary === "function") renderSummary();
+}
+
+function toggleViewMode() {
+  App.state.viewMode = App.state.viewMode === "calendar" ? "gantt" : "calendar";
+  document.getElementById("calendarGrid").classList.toggle("hidden", App.state.viewMode !== "calendar");
+  document.getElementById("ganttWrap").classList.toggle("hidden", App.state.viewMode !== "gantt");
+  document.getElementById("viewToggleBtn").textContent = App.state.viewMode === "calendar" ? "一覧表示" : "カレンダー表示";
+  renderAll();
 }
 
 function changeMonth(delta) {
@@ -108,7 +122,6 @@ function goToToday() {
 
 function renderCalendar() {
   var year = App.state.year, month = App.state.month;
-  document.getElementById("currentMonthLabel").textContent = year + "年" + month + "月";
 
   var grid = document.getElementById("calendarGrid");
   grid.innerHTML = "";

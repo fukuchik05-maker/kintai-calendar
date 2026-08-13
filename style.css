@@ -148,3 +148,56 @@ body {
 .add-member-row { display: flex; gap: 8px; margin-top: 12px; }
 .add-member-row input { font-size: 16px; padding: 8px; }
 .add-member-row button { font-size: 16px; padding: 8px 14px; cursor: pointer; }
+
+.hidden { display: none; }
+
+.gantt-wrap {
+  margin-top: 4px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 6px;
+  overflow: auto;
+  max-height: 70vh;
+}
+.gantt-table { border-collapse: collapse; font-size: 12px; }
+.gantt-table th, .gantt-table td { border: 1px solid #ddd; }
+.gantt-member-col {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: #fff;
+  min-width: 90px;
+  padding: 6px 10px;
+  text-align: left;
+  font-weight: bold;
+  white-space: nowrap;
+}
+.gantt-corner { position: sticky; top: 0; left: 0; z-index: 3; background: #f5f6f8; }
+.gantt-date-col {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #f5f6f8;
+  min-width: 40px;
+  width: 40px;
+  padding: 4px 2px;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+}
+.gantt-weekday { font-size: 10px; font-weight: normal; color: #666; }
+.gantt-daynote-dot { color: #3366ff; font-size: 10px; }
+.gantt-cell {
+  min-width: 40px;
+  width: 40px;
+  padding: 2px;
+  text-align: center;
+  cursor: pointer;
+}
+.gantt-cell.status-出勤 { background: #e5f5e5; }
+.gantt-cell.status-休日 { background: #e5e5e5; }
+.gantt-cell.status-有給 { background: #ecdcff; }
+.gantt-cell.status-半休 { background: #f5ecff; }
+.gantt-cell.status-欠勤 { background: #ffe5e5; }
+.gantt-cell.status-その他 { background: #fff7d9; }
+.gantt-cell.gantt-overtime { box-shadow: inset 0 3px 0 0 #cc7a00; }
