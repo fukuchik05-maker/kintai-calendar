@@ -129,12 +129,6 @@ function renderCalendar() {
   var totalDays = daysInMonth(year, month);
   var cellsCount = Math.ceil((startWeekday + totalDays) / 7) * 7;
 
-  // 週の行数ぶんだけ高さ1frの行を作り、ヘッダー行(auto)以外は使える縦の空間を均等に分け合う
-  var weekRowCount = cellsCount / 7;
-  var rowSizes = ["auto"];
-  for (var r = 0; r < weekRowCount; r++) rowSizes.push("1fr");
-  grid.style.gridTemplateRows = rowSizes.join(" ");
-
   var today = new Date();
   var todayKey = dateKeyOf(today.getFullYear(), today.getMonth() + 1, today.getDate());
 

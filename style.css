@@ -1,16 +1,11 @@
 * { box-sizing: border-box; }
-html, body { height: 100%; }
 body {
   font-family: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
   margin: 0;
-  padding: 12px;
+  padding: 16px;
   background: #f5f6f8;
   color: #222;
   font-size: 18px;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
 }
 
 .app-header {
@@ -18,16 +13,7 @@ body {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 8px;
-  margin-bottom: 12px;
-  flex: 0 0 auto;
-}
-
-main {
-  flex: 1 1 auto;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  margin-bottom: 16px;
 }
 .app-header button { padding: 8px 14px; font-size: 16px; cursor: pointer; }
 .nav span { margin: 0 8px; font-weight: bold; font-size: 20px; }
@@ -35,44 +21,40 @@ main {
 .actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; justify-self: end; justify-content: flex-end; }
 .app-title {
   justify-self: center;
-  font-size: 25px;
+  font-size: 22px;
   font-weight: bold;
   color: #333;
   white-space: nowrap;
   text-align: center;
 }
-.app-title .app-title-version { font-size: 16px; font-weight: normal; color: #888; margin-left: 6px; }
+.app-title .app-title-version { font-size: 15px; font-weight: normal; color: #888; margin-left: 6px; }
 
 .calendar-grid {
-  display: grid;
-  grid-template-rows: auto;
-  gap: 3px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   background: #fff;
-  padding: 6px;
+  padding: 8px;
   border-radius: 8px;
-  flex: 1 1 auto;
-  min-height: 0;
 }
 .calendar-row {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 3px;
-  min-height: 0;
+  gap: 4px;
 }
-.calendar-header-cell { text-align: center; font-weight: bold; font-size: 15px; padding: 4px; }
+.calendar-header-cell { text-align: center; font-weight: bold; font-size: 16px; padding: 6px; }
 .calendar-cell {
   border: 1px solid #ddd;
-  padding: 4px;
+  min-height: 100px;
+  padding: 6px;
   border-radius: 4px;
   background: #fff;
-  min-height: 0;
-  overflow-y: auto;
 }
 .cell-empty { background: #f0f0f0; border: none; }
 .cell-saturday { background: #eaf3ff; }
 .cell-sunday-holiday { background: #fdeaea; }
 .cell-today { outline: 2px solid #3366ff; }
-.cell-date-label { font-weight: bold; font-size: 15px; margin-bottom: 4px; }
+.cell-date-label { font-weight: bold; font-size: 16px; margin-bottom: 6px; }
 .day-note {
   font-weight: normal;
   font-size: 13px;
@@ -83,10 +65,10 @@ main {
 .day-note-empty { color: #ccc; }
 .day-note:hover { text-decoration: underline; }
 
-.cell-member-list { display: flex; flex-direction: column; gap: 2px; }
+.cell-member-list { display: flex; flex-direction: column; gap: 3px; }
 .cell-member-row {
-  font-size: 13px;
-  padding: 2px 4px;
+  font-size: 14px;
+  padding: 3px 5px;
   border-radius: 3px;
   cursor: pointer;
   background: #f0f0f0;
@@ -108,9 +90,9 @@ main {
 }
 .cell-add-row:hover { color: #3366ff; }
 
-.summary-panel { flex: 0 0 auto; background: #fff; padding: 12px; border-radius: 8px; overflow-x: auto; }
-.summary-table { border-collapse: collapse; width: 100%; font-size: 16px; }
-.summary-table th, .summary-table td { border: 1px solid #ddd; padding: 8px 10px; text-align: center; }
+.summary-panel { margin-top: 16px; background: #fff; padding: 16px; border-radius: 8px; }
+.summary-table { border-collapse: collapse; width: 100%; font-size: 17px; }
+.summary-table th, .summary-table td { border: 1px solid #ddd; padding: 10px 12px; text-align: center; }
 .cell-overtime { color: #cc3300; font-weight: bold; }
 
 .modal-overlay {
