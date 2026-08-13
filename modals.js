@@ -1,3 +1,19 @@
+function openDayMemberPicker(dateKey) {
+  var members = App.state.data.members;
+  if (members.length === 0) return;
+  if (members.length === 1) {
+    openEditModal(dateKey, members[0].id);
+    return;
+  }
+  var names = members.map(function (m, i) { return (i + 1) + ": " + m.name; }).join("\n");
+  var input = prompt("記録する人を選んでください\n" + names, "1");
+  if (!input) return;
+  var idx = parseInt(input, 10) - 1;
+  if (idx >= 0 && idx < members.length) {
+    openEditModal(dateKey, members[idx].id);
+  }
+}
+
 function openEditModal(dateKey, memberId) {
   var member = null;
   for (var i = 0; i < App.state.data.members.length; i++) {

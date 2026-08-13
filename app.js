@@ -101,11 +101,18 @@ function renderCalendar() {
       dateLabel.textContent = dayNum + (holidayName ? " " + holidayName : "");
       cell.appendChild(dateLabel);
 
+      var isDayOff = weekday === 0 || weekday === 6 || !!holidayName;
+
       var memberList = document.createElement("div");
       memberList.className = "cell-member-list";
 
       App.state.data.members.forEach(function (member) {
         var record = Storage.getRecord(App.state.data, dk, member.id);
+
+        // 土日祝は既定で「休み」扱いのため、実際に記録がある人だけ表示する
+        // (誰も入力していない土日祝に全員分の名前が並んでしまうのを防ぐ)
+        if (isDayOff && !record) return;
+
         var memberRow = document.createElement("div");
         memberRow.className = "cell-member-row status-" + (record ? record.status : "未入力");
 
@@ -128,6 +135,16 @@ function renderCalendar() {
 
         memberList.appendChild(memberRow);
       });
+
+      if (isDayOff) {
+        var addRow = document.createElement("div");
+        addRow.className = "cell-add-row";
+        addRow.textContent = "+ 記録を追加";
+        addRow.addEventListener("click", (function (dkClosure) {
+          return function () { openDayMemberPicker(dkClosure); };
+        })(dk));
+        memberList.appendChild(addRow);
+      }
 
       cell.appendChild(memberList);
     } else {
