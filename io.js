@@ -41,3 +41,25 @@ function exportCsv() {
   var BOM = String.fromCharCode(0xFEFF); // Excelで開いた際に日本語が文字化けしないためのBOM
   downloadTextFile(filename, BOM + csv, "text/csv;charset=utf-8;");
 }
+
+function exportBackup() {
+  var json = JSON.stringify(App.state.data, null, 2);
+  downloadTextFile("kintai-backup.json", json, "application/json");
+}
+
+function importBackupFile(file) {
+  var reader = new FileReader();
+  reader.onload = function () {
+    try {
+      var parsed = JSON.parse(reader.result);
+      if (!parsed.members || !parsed.records) throw new Error("invalid format");
+      if (!confirm("現在のデータを上書きして復元します。よろしいですか？")) return;
+      App.state.data = parsed;
+      Storage.saveData(App.state.data);
+      renderAll();
+    } catch (e) {
+      alert("読み込みに失敗しました。正しいバックアップファイルを選択してください。");
+    }
+  };
+  reader.readAsText(file);
+}
