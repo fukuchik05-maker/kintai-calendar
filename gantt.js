@@ -40,11 +40,11 @@ function renderGanttView() {
 
     var dayNote = Storage.getDayNote(App.state.data, dk);
     if (dayNote) {
-      var dot = document.createElement("div");
-      dot.className = "gantt-daynote-dot";
-      dot.textContent = "●";
-      dot.title = dayNote;
-      th.appendChild(dot);
+      var noteDiv = document.createElement("div");
+      noteDiv.className = "gantt-daynote";
+      noteDiv.textContent = dayNote;
+      noteDiv.title = dayNote;
+      th.appendChild(noteDiv);
     }
 
     th.addEventListener("click", (function (dkClosure) {
@@ -89,6 +89,13 @@ function renderGanttView() {
         var outDiv = document.createElement("div");
         outDiv.textContent = record.clockOut;
         td.appendChild(outDiv);
+
+        if (overtimeMin > 0) {
+          var otDiv = document.createElement("div");
+          otDiv.className = "gantt-overtime-badge";
+          otDiv.textContent = "+" + Calc.minutesToHoursLabel(overtimeMin);
+          td.appendChild(otDiv);
+        }
 
         titleParts.push(record.clockIn + "-" + record.clockOut);
         if (overtimeMin > 0) titleParts.push("残業" + Calc.minutesToHoursLabel(overtimeMin));

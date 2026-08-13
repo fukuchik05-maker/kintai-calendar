@@ -178,21 +178,32 @@ body {
   top: 0;
   z-index: 1;
   background: #f5f6f8;
-  min-width: 40px;
-  width: 40px;
+  min-width: 56px;
+  width: 56px;
   padding: 4px 2px;
   text-align: center;
   font-weight: bold;
   cursor: pointer;
+  vertical-align: top;
 }
 .gantt-weekday { font-size: 10px; font-weight: normal; color: #666; }
-.gantt-daynote-dot { color: #3366ff; font-size: 10px; }
+.gantt-daynote {
+  font-size: 9px;
+  font-weight: normal;
+  font-style: italic;
+  color: #3366ff;
+  white-space: normal;
+  word-break: break-all;
+  line-height: 1.2;
+  margin-top: 2px;
+}
 .gantt-cell {
-  min-width: 40px;
-  width: 40px;
+  min-width: 56px;
+  width: 56px;
   padding: 2px;
   text-align: center;
   cursor: pointer;
+  vertical-align: top;
 }
 .gantt-cell.status-出勤 { background: #e5f5e5; }
 .gantt-cell.status-休日 { background: #e5e5e5; }
@@ -201,3 +212,12 @@ body {
 .gantt-cell.status-欠勤 { background: #ffe5e5; }
 .gantt-cell.status-その他 { background: #fff7d9; }
 .gantt-cell.gantt-overtime { box-shadow: inset 0 3px 0 0 #cc7a00; }
+.gantt-overtime-badge {
+  color: #b34700;
+  background: #fff0e0;
+  font-weight: bold;
+  font-size: 9px;
+  border-radius: 3px;
+  margin-top: 1px;
+  padding: 0 2px;
+}
