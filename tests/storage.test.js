@@ -12,10 +12,11 @@ function test(name, fn) {
   }
 }
 
-test("defaultData returns empty members and records", function () {
+test("defaultData returns empty members, records and dayNotes", function () {
   var data = Storage.defaultData();
   assert.deepStrictEqual(data.members, []);
   assert.deepStrictEqual(data.records, {});
+  assert.deepStrictEqual(data.dayNotes, {});
 });
 
 test("generateMemberId returns m1 for empty list and increments", function () {
@@ -68,6 +69,25 @@ test("setRecord/getRecord/deleteRecord round-trip correctly", function () {
   Storage.deleteRecord(data, "2026-08-13", id);
   assert.strictEqual(Storage.getRecord(data, "2026-08-13", id), null);
   assert.strictEqual(data.records["2026-08-13"], undefined);
+});
+
+test("getDayNote returns empty string when not set", function () {
+  var data = Storage.defaultData();
+  assert.strictEqual(Storage.getDayNote(data, "2026-08-13"), "");
+});
+
+test("setDayNote/getDayNote round-trip correctly", function () {
+  var data = Storage.defaultData();
+  Storage.setDayNote(data, "2026-08-13", "台風接近のため注意");
+  assert.strictEqual(Storage.getDayNote(data, "2026-08-13"), "台風接近のため注意");
+});
+
+test("setDayNote with empty text removes the note", function () {
+  var data = Storage.defaultData();
+  Storage.setDayNote(data, "2026-08-13", "メモ");
+  Storage.setDayNote(data, "2026-08-13", "");
+  assert.strictEqual(Storage.getDayNote(data, "2026-08-13"), "");
+  assert.strictEqual(data.dayNotes["2026-08-13"], undefined);
 });
 
 console.log("storage.test.js done");

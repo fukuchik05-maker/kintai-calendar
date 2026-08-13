@@ -1,3 +1,11 @@
+function editDayNote(dateKey) {
+  var current = Storage.getDayNote(App.state.data, dateKey);
+  var input = prompt(dateKey + " のコメント(空欄で削除)", current);
+  if (input === null) return; // キャンセル
+  Storage.setDayNote(App.state.data, dateKey, input.trim());
+  persistAndRerender();
+}
+
 function openDayMemberPicker(dateKey) {
   var members = App.state.data.members;
   if (members.length === 0) return;

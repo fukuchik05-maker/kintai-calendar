@@ -45,6 +45,15 @@ body {
 .cell-sunday-holiday { background: #fdeaea; }
 .cell-today { outline: 2px solid #3366ff; }
 .cell-date-label { font-weight: bold; font-size: 16px; margin-bottom: 6px; }
+.day-note {
+  font-weight: normal;
+  font-size: 13px;
+  font-style: italic;
+  color: #3366ff;
+  cursor: pointer;
+}
+.day-note-empty { color: #ccc; }
+.day-note:hover { text-decoration: underline; }
 
 .cell-member-list { display: flex; flex-direction: column; gap: 3px; }
 .cell-member-row {

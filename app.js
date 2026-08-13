@@ -151,7 +151,24 @@ function renderCalendar() {
 
       var dateLabel = document.createElement("div");
       dateLabel.className = "cell-date-label";
-      dateLabel.textContent = dayNum + (holidayName ? " " + holidayName : "");
+
+      var dateNumSpan = document.createElement("span");
+      dateNumSpan.textContent = dayNum + (holidayName ? " " + holidayName : "");
+      dateLabel.appendChild(dateNumSpan);
+
+      var dayNote = Storage.getDayNote(App.state.data, dk);
+      var dayNoteSpan = document.createElement("span");
+      dayNoteSpan.className = "day-note" + (dayNote ? "" : " day-note-empty");
+      dayNoteSpan.textContent = dayNote ? " " + dayNote : " +";
+      dayNoteSpan.title = "クリックしてこの日のコメントを編集";
+      dayNoteSpan.addEventListener("click", (function (dkClosure) {
+        return function (e) {
+          e.stopPropagation();
+          if (typeof editDayNote === "function") editDayNote(dkClosure);
+        };
+      })(dk));
+      dateLabel.appendChild(dayNoteSpan);
+
       cell.appendChild(dateLabel);
 
       var isDayOff = weekday === 0 || weekday === 6 || !!holidayName;

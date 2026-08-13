@@ -4,7 +4,7 @@
   var STORAGE_KEY = "kintai-data-v1";
 
   function defaultData() {
-    return { members: [], records: {} };
+    return { members: [], records: {}, dayNotes: {} };
   }
 
   function loadData() {
@@ -19,6 +19,7 @@
       var parsed = JSON.parse(raw);
       if (!parsed.members) parsed.members = [];
       if (!parsed.records) parsed.records = {};
+      if (!parsed.dayNotes) parsed.dayNotes = {};
       return parsed;
     } catch (e) {
       return defaultData();
@@ -84,6 +85,19 @@
     }
   }
 
+  function getDayNote(data, dateKey) {
+    return (data.dayNotes && data.dayNotes[dateKey]) || "";
+  }
+
+  function setDayNote(data, dateKey, text) {
+    if (!data.dayNotes) data.dayNotes = {};
+    if (text) {
+      data.dayNotes[dateKey] = text;
+    } else {
+      delete data.dayNotes[dateKey];
+    }
+  }
+
   var api = {
     STORAGE_KEY: STORAGE_KEY,
     defaultData: defaultData,
@@ -95,7 +109,9 @@
     removeMember: removeMember,
     getRecord: getRecord,
     setRecord: setRecord,
-    deleteRecord: deleteRecord
+    deleteRecord: deleteRecord,
+    getDayNote: getDayNote,
+    setDayNote: setDayNote
   };
 
   if (typeof module !== "undefined" && module.exports) {
