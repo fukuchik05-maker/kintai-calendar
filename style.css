@@ -2,10 +2,10 @@
 body {
   font-family: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
   margin: 0;
-  padding: 16px;
+  padding: 12px;
   background: #f5f6f8;
   color: #222;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .app-header {
@@ -13,10 +13,10 @@ body {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
-.app-header button { padding: 9px 15px; font-size: 17px; cursor: pointer; }
-.nav span { margin: 0 8px; font-weight: bold; font-size: 22px; }
+.app-header button { padding: 8px 14px; font-size: 16px; cursor: pointer; }
+.nav span { margin: 0 8px; font-weight: bold; font-size: 20px; }
 .nav { display: flex; align-items: center; flex-wrap: wrap; justify-self: start; }
 .actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; justify-self: end; justify-content: flex-end; }
 .app-title {
@@ -32,21 +32,21 @@ body {
 .calendar-grid {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   background: #fff;
-  padding: 8px;
+  padding: 6px;
   border-radius: 8px;
 }
 .calendar-row {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
+  gap: 3px;
 }
-.calendar-header-cell { text-align: center; font-weight: bold; font-size: 18px; padding: 8px; }
+.calendar-header-cell { text-align: center; font-weight: bold; font-size: 15px; padding: 4px; }
 .calendar-cell {
   border: 1px solid #ddd;
-  min-height: 135px;
-  padding: 8px;
+  min-height: 75px;
+  padding: 4px;
   border-radius: 4px;
   background: #fff;
 }
@@ -54,10 +54,10 @@ body {
 .cell-saturday { background: #eaf3ff; }
 .cell-sunday-holiday { background: #fdeaea; }
 .cell-today { outline: 2px solid #3366ff; }
-.cell-date-label { font-weight: bold; font-size: 18px; margin-bottom: 8px; }
+.cell-date-label { font-weight: bold; font-size: 15px; margin-bottom: 4px; }
 .day-note {
   font-weight: normal;
-  font-size: 15px;
+  font-size: 13px;
   font-style: italic;
   color: #3366ff;
   cursor: pointer;
@@ -65,10 +65,10 @@ body {
 .day-note-empty { color: #ccc; }
 .day-note:hover { text-decoration: underline; }
 
-.cell-member-list { display: flex; flex-direction: column; gap: 4px; }
+.cell-member-list { display: flex; flex-direction: column; gap: 2px; }
 .cell-member-row {
-  font-size: 16px;
-  padding: 4px 6px;
+  font-size: 13px;
+  padding: 2px 4px;
   border-radius: 3px;
   cursor: pointer;
   background: #f0f0f0;
@@ -83,16 +83,16 @@ body {
 .cell-note { color: #666; font-style: italic; word-break: break-all; }
 
 .cell-add-row {
-  font-size: 16px;
+  font-size: 14px;
   color: #999;
   cursor: pointer;
-  padding: 4px 6px;
+  padding: 3px 5px;
 }
 .cell-add-row:hover { color: #3366ff; }
 
-.summary-panel { margin-top: 16px; background: #fff; padding: 18px; border-radius: 8px; }
-.summary-table { border-collapse: collapse; width: 100%; font-size: 19px; }
-.summary-table th, .summary-table td { border: 1px solid #ddd; padding: 12px 14px; text-align: center; }
+.summary-panel { margin-top: 12px; background: #fff; padding: 12px; border-radius: 8px; }
+.summary-table { border-collapse: collapse; width: 100%; font-size: 16px; }
+.summary-table th, .summary-table td { border: 1px solid #ddd; padding: 8px 10px; text-align: center; }
 .cell-overtime { color: #cc3300; font-weight: bold; }
 
 .modal-overlay {
