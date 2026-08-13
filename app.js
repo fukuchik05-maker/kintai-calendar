@@ -4,7 +4,7 @@ var App = {
     month: null,
     data: null,
     editingContext: null,
-    viewMode: "calendar" // "calendar" または "gantt"
+    viewMode: "gantt" // "calendar" または "gantt"。既定は一覧表示
   }
 };
 
@@ -50,11 +50,15 @@ function renderAll() {
   if (typeof renderSummary === "function") renderSummary();
 }
 
-function toggleViewMode() {
-  App.state.viewMode = App.state.viewMode === "calendar" ? "gantt" : "calendar";
+function syncViewModeUI() {
   document.getElementById("calendarGrid").classList.toggle("hidden", App.state.viewMode !== "calendar");
   document.getElementById("ganttWrap").classList.toggle("hidden", App.state.viewMode !== "gantt");
   document.getElementById("viewToggleBtn").textContent = App.state.viewMode === "calendar" ? "一覧表示" : "カレンダー表示";
+}
+
+function toggleViewMode() {
+  App.state.viewMode = App.state.viewMode === "calendar" ? "gantt" : "calendar";
+  syncViewModeUI();
   renderAll();
 }
 

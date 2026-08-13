@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   initState();
+  syncViewModeUI();
   renderAll();
 
   document.getElementById("appTitle").innerHTML =

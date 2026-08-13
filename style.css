@@ -192,9 +192,10 @@ body {
   font-weight: normal;
   font-style: italic;
   color: #3366ff;
-  white-space: normal;
-  word-break: break-all;
-  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 52px;
   margin-top: 2px;
 }
 .gantt-cell {
