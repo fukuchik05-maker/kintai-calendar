@@ -67,3 +67,49 @@ function renderSummary() {
   table.appendChild(tbody);
   panel.appendChild(table);
 }
+
+function openReportModal() {
+  var select = document.getElementById("reportMemberSelect");
+  select.innerHTML = "";
+  App.state.data.members.forEach(function (member) {
+    var opt = document.createElement("option");
+    opt.value = member.id;
+    opt.textContent = member.name;
+    select.appendChild(opt);
+  });
+  renderReportContent();
+  document.getElementById("reportModal").classList.remove("hidden");
+}
+
+function closeReportModal() {
+  document.getElementById("reportModal").classList.add("hidden");
+}
+
+function renderReportContent() {
+  var select = document.getElementById("reportMemberSelect");
+  var memberId = select.value;
+  var member = null;
+  for (var i = 0; i < App.state.data.members.length; i++) {
+    if (App.state.data.members[i].id === memberId) { member = App.state.data.members[i]; break; }
+  }
+  var content = document.getElementById("reportContent");
+  if (!member) {
+    content.innerHTML = "<p>メンバーが登録されていません。</p>";
+    return;
+  }
+
+  var stats = computeMemberMonthStats(member.id, App.state.year, App.state.month);
+  var balance = computeMemberLeaveBalance(member, App.state.year, App.state.month);
+  var overtimeClass = stats.overtimeMinutes > 0 ? "cell-overtime" : "";
+
+  content.innerHTML =
+    "<h3>" + App.state.year + "年" + App.state.month + "月 " + member.name + " さんの月報</h3>" +
+    "<ul>" +
+    "<li>出勤日数: " + stats.workDays + " 日</li>" +
+    "<li>実労働時間: " + Calc.minutesToHoursLabel(stats.workMinutes) + "</li>" +
+    "<li class=\"" + overtimeClass + "\">残業時間: " + Calc.minutesToHoursLabel(stats.overtimeMinutes) + "</li>" +
+    "<li>有給消化: " + stats.leaveDays + " 日</li>" +
+    "<li>有給残: " + balance + " 日</li>" +
+    "<li>欠勤日数: " + stats.absentDays + " 日</li>" +
+    "</ul>";
+}
