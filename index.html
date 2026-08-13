@@ -78,10 +78,14 @@
   </div>
 
   <div id="reportModal" class="modal-overlay hidden">
-    <div class="modal">
+    <div class="modal modal-wide">
       <h2 id="reportTitle">月報</h2>
-      <div id="reportMemberTabs" class="tab-buttons"></div>
-      <div id="reportContent"></div>
+      <div class="tab-buttons">
+        <button id="reportSummaryTabBtn" class="tab-btn">当月サマリ</button>
+        <button id="reportTrendTabBtn" class="tab-btn">月次推移</button>
+      </div>
+      <div id="reportSummaryContent" class="tab-content"></div>
+      <div id="reportTrendContent" class="tab-content hidden"></div>
       <div class="modal-actions">
         <button id="reportCloseBtn">閉じる</button>
       </div>

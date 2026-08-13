@@ -103,6 +103,9 @@ body {
   max-height: 90vh;
   overflow-y: auto;
 }
+.modal-wide { width: 900px; }
+.report-table-wrap { overflow-x: auto; }
+.trend-table th, .trend-table td { white-space: nowrap; }
 .tab-buttons { display: flex; gap: 4px; border-bottom: 1px solid #ddd; margin-bottom: 12px; }
 .tab-btn {
   padding: 8px 14px;

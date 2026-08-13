@@ -13,6 +13,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("reportBtn").addEventListener("click", openReportModal);
   document.getElementById("reportCloseBtn").addEventListener("click", closeReportModal);
+  document.getElementById("reportSummaryTabBtn").addEventListener("click", function () { switchReportTab("summary"); });
+  document.getElementById("reportTrendTabBtn").addEventListener("click", function () { switchReportTab("trend"); });
 
   document.getElementById("editStatus").addEventListener("change", onEditStatusChange);
   document.getElementById("editSaveBtn").addEventListener("click", saveEditModal);
