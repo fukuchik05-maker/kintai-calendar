@@ -19,6 +19,14 @@ function daysInMonth(year, month) {
   return new Date(year, month, 0).getDate();
 }
 
+function makeTimePart(text, isOvertime) {
+  if (!isOvertime) return document.createTextNode(text);
+  var span = document.createElement("span");
+  span.className = "overtime-part";
+  span.textContent = text;
+  return span;
+}
+
 function initState() {
   var now = new Date();
   App.state.year = now.getFullYear();
@@ -161,16 +169,21 @@ function renderCalendar() {
         var memberRow = document.createElement("div");
         memberRow.className = "cell-member-row status-" + (record ? record.status : "未入力");
 
-        var overtimeMin = record ? Calc.calcOvertimeMinutes(record.clockIn, record.clockOut, record.status) : 0;
-        if (overtimeMin > 0) memberRow.classList.add("has-overtime");
+        memberRow.appendChild(document.createTextNode(member.name.charAt(0) + " "));
 
-        var timeText = "";
         if (record && record.status === "出勤" && record.clockIn && record.clockOut) {
-          timeText = record.clockIn + "-" + record.clockOut;
+          // 時間外(8:30より前 / 17:30より後)の側だけを色付けする
+          var inMin = Calc.timeToMinutes(record.clockIn);
+          var outMin = Calc.timeToMinutes(record.clockOut);
+          var isEarly = inMin < Calc.STANDARD_START_MIN;
+          var isLate = outMin > Calc.STANDARD_END_MIN;
+
+          memberRow.appendChild(makeTimePart(record.clockIn, isEarly));
+          memberRow.appendChild(document.createTextNode("-"));
+          memberRow.appendChild(makeTimePart(record.clockOut, isLate));
         } else if (record) {
-          timeText = record.status;
+          memberRow.appendChild(document.createTextNode(record.status));
         }
-        memberRow.textContent = member.name.charAt(0) + " " + timeText;
 
         memberRow.addEventListener("click", (function (dkClosure, memberIdClosure) {
           return function () {

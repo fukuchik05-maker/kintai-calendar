@@ -59,7 +59,7 @@ body {
 .cell-member-row.status-半休 { background: #eaf0ff; }
 .cell-member-row.status-欠勤 { background: #ffe5e5; }
 .cell-member-row.status-その他 { background: #fff7d9; }
-.cell-member-row.has-overtime { color: #cc3300; font-weight: bold; }
+.overtime-part { color: #cc3300; font-weight: bold; }
 
 .cell-add-row {
   font-size: 11px;
