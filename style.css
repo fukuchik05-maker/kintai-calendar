@@ -5,6 +5,7 @@ body {
   padding: 16px;
   background: #f5f6f8;
   color: #222;
+  font-size: 18px;
 }
 
 .app-header {
@@ -15,8 +16,8 @@ body {
   gap: 8px;
   margin-bottom: 16px;
 }
-.app-header button { padding: 6px 12px; cursor: pointer; }
-.nav span { margin: 0 8px; font-weight: bold; }
+.app-header button { padding: 8px 14px; font-size: 16px; cursor: pointer; }
+.nav span { margin: 0 8px; font-weight: bold; font-size: 20px; }
 
 .calendar-grid {
   display: flex;
@@ -31,11 +32,11 @@ body {
   grid-template-columns: repeat(7, 1fr);
   gap: 4px;
 }
-.calendar-header-cell { text-align: center; font-weight: bold; padding: 4px; }
+.calendar-header-cell { text-align: center; font-weight: bold; font-size: 16px; padding: 6px; }
 .calendar-cell {
   border: 1px solid #ddd;
-  min-height: 90px;
-  padding: 4px;
+  min-height: 100px;
+  padding: 6px;
   border-radius: 4px;
   background: #fff;
 }
@@ -43,12 +44,12 @@ body {
 .cell-saturday { background: #eaf3ff; }
 .cell-sunday-holiday { background: #fdeaea; }
 .cell-today { outline: 2px solid #3366ff; }
-.cell-date-label { font-weight: bold; font-size: 12px; margin-bottom: 4px; }
+.cell-date-label { font-weight: bold; font-size: 16px; margin-bottom: 6px; }
 
-.cell-member-list { display: flex; flex-direction: column; gap: 2px; }
+.cell-member-list { display: flex; flex-direction: column; gap: 3px; }
 .cell-member-row {
-  font-size: 11px;
-  padding: 2px 4px;
+  font-size: 14px;
+  padding: 3px 5px;
   border-radius: 3px;
   cursor: pointer;
   background: #f0f0f0;
@@ -62,16 +63,16 @@ body {
 .overtime-part { color: #cc3300; font-weight: bold; }
 
 .cell-add-row {
-  font-size: 11px;
+  font-size: 14px;
   color: #999;
   cursor: pointer;
-  padding: 2px 4px;
+  padding: 3px 5px;
 }
 .cell-add-row:hover { color: #3366ff; }
 
-.summary-panel { margin-top: 16px; background: #fff; padding: 12px; border-radius: 8px; }
-.summary-table { border-collapse: collapse; width: 100%; }
-.summary-table th, .summary-table td { border: 1px solid #ddd; padding: 6px 8px; text-align: center; }
+.summary-panel { margin-top: 16px; background: #fff; padding: 16px; border-radius: 8px; }
+.summary-table { border-collapse: collapse; width: 100%; font-size: 17px; }
+.summary-table th, .summary-table td { border: 1px solid #ddd; padding: 10px 12px; text-align: center; }
 .cell-overtime { color: #cc3300; font-weight: bold; }
 
 .modal-overlay {
@@ -93,6 +94,9 @@ body {
   overflow-y: auto;
 }
 .modal label { display: block; margin-bottom: 10px; }
-.modal input, .modal select, .modal textarea { width: 100%; padding: 6px; margin-top: 4px; }
+.modal input, .modal select, .modal textarea { width: 100%; padding: 8px; margin-top: 4px; font-size: 16px; }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+.modal-actions button { font-size: 16px; padding: 8px 14px; cursor: pointer; }
 .add-member-row { display: flex; gap: 8px; margin-top: 12px; }
+.add-member-row input { font-size: 16px; padding: 8px; }
+.add-member-row button { font-size: 16px; padding: 8px 14px; cursor: pointer; }
