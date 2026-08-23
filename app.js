@@ -69,41 +69,32 @@ function changeMonth(delta) {
   while (m < 1) { m += 12; y -= 1; }
   App.state.month = m;
   App.state.year = y;
+  autoFillWeekdaysForCurrentMonth();
   renderAll();
 }
 
-function fillWeekdaysForMonth() {
-  var year = App.state.year, month = App.state.month;
+// 指定月の平日(祝日除く)のうち、まだ記録がない「日付×メンバー」の組み合わせを一覧にして返す(書き込みはしない)
+function computeWeekdayFillPending(year, month) {
   var total = daysInMonth(year, month);
   var firstDay = new Date(year, month - 1, 1);
   var startWeekday = firstDay.getDay();
 
-  var targetKeys = [];
+  var pending = [];
   for (var d = 1; d <= total; d++) {
     var weekday = (startWeekday + d - 1) % 7;
     var dk = dateKeyOf(year, month, d);
     if (weekday === 0 || weekday === 6) continue;
     if (Holidays.isHoliday(dk)) continue;
-    targetKeys.push(dk);
-  }
 
-  // 未入力の組み合わせ(日付×メンバー)を先に数える。書き込みは確認後に行う
-  var pending = [];
-  targetKeys.forEach(function (dk) {
     App.state.data.members.forEach(function (member) {
       if (Storage.getRecord(App.state.data, dk, member.id)) return; // 既存の記録は上書きしない
       pending.push({ dateKey: dk, memberId: member.id });
     });
-  });
-
-  if (pending.length === 0) {
-    alert("入力対象がありませんでした(すべての平日に記録済みです)。");
-    return;
   }
-  if (!confirm(year + "年" + month + "月の平日のうち、未入力の" + pending.length + "件に 08:30-17:30 出勤を入力します。よろしいですか？")) {
-    return;
-  }
+  return pending;
+}
 
+function applyWeekdayFillPending(pending) {
   pending.forEach(function (item) {
     Storage.setRecord(App.state.data, item.dateKey, item.memberId, {
       status: "出勤",
@@ -114,13 +105,38 @@ function fillWeekdaysForMonth() {
       note: ""
     });
   });
+}
+
+function fillWeekdaysForMonth() {
+  var year = App.state.year, month = App.state.month;
+  var pending = computeWeekdayFillPending(year, month);
+
+  if (pending.length === 0) {
+    alert("入力対象がありませんでした(すべての平日に記録済みです)。");
+    return;
+  }
+  if (!confirm(year + "年" + month + "月の平日のうち、未入力の" + pending.length + "件に 08:30-17:30 出勤を入力します。よろしいですか？")) {
+    return;
+  }
+
+  applyWeekdayFillPending(pending);
   persistAndRerender();
+}
+
+// 表示中の月の平日を、確認ダイアログなしで裏側から自動的に埋める。
+// 既に記録がある日はそのままなので、有給・欠勤などを上書きする心配はない。
+function autoFillWeekdaysForCurrentMonth() {
+  var pending = computeWeekdayFillPending(App.state.year, App.state.month);
+  if (pending.length === 0) return;
+  applyWeekdayFillPending(pending);
+  Storage.saveData(App.state.data);
 }
 
 function goToToday() {
   var now = new Date();
   App.state.year = now.getFullYear();
   App.state.month = now.getMonth() + 1;
+  autoFillWeekdaysForCurrentMonth();
   renderAll();
 }
 

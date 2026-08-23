@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   initState();
   syncViewModeUI();
+  autoFillWeekdaysForCurrentMonth();
   renderAll();
 
   document.getElementById("appTitle").innerHTML =
@@ -11,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("todayBtn").addEventListener("click", goToToday);
   document.getElementById("viewToggleBtn").addEventListener("click", toggleViewMode);
   document.getElementById("fillWeekdaysBtn").addEventListener("click", fillWeekdaysForMonth);
+  document.getElementById("punchNowBtn").addEventListener("click", punchNow);
 
   document.getElementById("memberSettingsBtn").addEventListener("click", openMemberModal);
   document.getElementById("memberCloseBtn").addEventListener("click", closeMemberModal);

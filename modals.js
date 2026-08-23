@@ -1,3 +1,50 @@
+// 「打刻」: 今この瞬間の時刻を、選んだ人の今日の出勤時刻または退勤時刻として記録する。
+// 平日は自動で8:30-17:30が入っているので、通常は使わず、早出・残業など実際の時刻が
+// 標準と違うときだけ使う想定(そのタイミングでボタンを押せば時刻を手入力しなくて済む)。
+function punchNow() {
+  var members = App.state.data.members;
+  if (members.length === 0) {
+    alert("メンバーが登録されていません。先にメンバー設定から登録してください。");
+    return;
+  }
+
+  var member;
+  if (members.length === 1) {
+    member = members[0];
+  } else {
+    var names = members.map(function (m, i) { return (i + 1) + ": " + m.name; }).join("\n");
+    var memberInput = prompt("打刻する人を選んでください\n" + names, "1");
+    if (!memberInput) return;
+    var idx = parseInt(memberInput, 10) - 1;
+    if (idx < 0 || idx >= members.length) return;
+    member = members[idx];
+  }
+
+  var directionInput = prompt(member.name + "さん: 出勤打刻なら 1、退勤打刻なら 2 を入力してください", "2");
+  if (!directionInput) return;
+  var trimmed = directionInput.trim();
+  if (trimmed !== "1" && trimmed !== "2") return;
+  var isClockIn = trimmed === "1";
+
+  var now = new Date();
+  var todayKey = dateKeyOf(now.getFullYear(), now.getMonth() + 1, now.getDate());
+  var nowTime = pad2(now.getHours()) + ":" + pad2(now.getMinutes());
+
+  var existing = Storage.getRecord(App.state.data, todayKey, member.id);
+  var record = existing || { status: "出勤", clockIn: "", clockOut: "", breakMin: 60, hourlyLeaveHours: 0, note: "" };
+  record.status = "出勤";
+  if (isClockIn) {
+    record.clockIn = nowTime;
+  } else {
+    record.clockOut = nowTime;
+  }
+
+  Storage.setRecord(App.state.data, todayKey, member.id, record);
+  persistAndRerender();
+
+  alert(member.name + "さんの" + (isClockIn ? "出勤" : "退勤") + "を " + nowTime + " で記録しました。");
+}
+
 function editDayNote(dateKey) {
   var current = Storage.getDayNote(App.state.data, dateKey);
   var input = prompt(dateKey + " のコメント(空欄で削除)", current);
