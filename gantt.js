@@ -105,10 +105,18 @@ function renderGanttView() {
         var overtimeMin = Calc.calcOvertimeMinutes(record.clockIn, record.clockOut, record.status);
         if (overtimeMin > 0) td.classList.add("gantt-overtime");
 
+        // 時間外(8:30より前 / 17:30より後)の側だけを色付けする(カレンダー表示と同じ挙動)
+        var inMin = Calc.timeToMinutes(record.clockIn);
+        var outMin = Calc.timeToMinutes(record.clockOut);
+        var isEarly = inMin < Calc.STANDARD_START_MIN;
+        var isLate = outMin > Calc.STANDARD_END_MIN;
+
         var inDiv = document.createElement("div");
+        if (isEarly) inDiv.className = "gantt-time-overtime";
         inDiv.textContent = record.clockIn;
         td.appendChild(inDiv);
         var outDiv = document.createElement("div");
+        if (isLate) outDiv.className = "gantt-time-overtime";
         outDiv.textContent = record.clockOut;
         td.appendChild(outDiv);
 
