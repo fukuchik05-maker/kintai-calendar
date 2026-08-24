@@ -124,16 +124,16 @@ function generateMemberId(existingMembers) {
   return "m" + (maxNum + 1);
 }
 
-function addMember(data, name, grantedLeaveDays) {
+function addMember(data, name, grantedLeaveDays, employeeCode) {
   var id = generateMemberId(data.members);
-  var member = { id: id, name: name, grantedLeaveDays: grantedLeaveDays, employeeCode: "" };
+  var member = { id: id, name: name, grantedLeaveDays: grantedLeaveDays, employeeCode: employeeCode || "" };
   data.members.push(member);
-  setDoc(doc(db, "members", id), { name: member.name, grantedLeaveDays: member.grantedLeaveDays, employeeCode: "" })
+  setDoc(doc(db, "members", id), { name: member.name, grantedLeaveDays: member.grantedLeaveDays, employeeCode: member.employeeCode })
     .catch(function (err) { reportSaveError("メンバー追加", err); });
   return id;
 }
 
-function updateMember(data, id, name, grantedLeaveDays) {
+function updateMember(data, id, name, grantedLeaveDays, employeeCode) {
   var m = null;
   for (var i = 0; i < data.members.length; i++) {
     if (data.members[i].id === id) { m = data.members[i]; break; }
@@ -141,7 +141,8 @@ function updateMember(data, id, name, grantedLeaveDays) {
   if (!m) return false;
   m.name = name;
   m.grantedLeaveDays = grantedLeaveDays;
-  setDoc(doc(db, "members", id), { name: m.name, grantedLeaveDays: m.grantedLeaveDays, employeeCode: m.employeeCode || "" })
+  m.employeeCode = employeeCode || "";
+  setDoc(doc(db, "members", id), { name: m.name, grantedLeaveDays: m.grantedLeaveDays, employeeCode: m.employeeCode })
     .catch(function (err) { reportSaveError("メンバー更新", err); });
   return true;
 }

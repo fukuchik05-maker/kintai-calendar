@@ -168,7 +168,7 @@ function renderMemberTable() {
     nameInput.type = "text";
     nameInput.value = member.name;
     nameInput.addEventListener("change", function () {
-      Storage.updateMember(App.state.data, member.id, nameInput.value, member.grantedLeaveDays);
+      Storage.updateMember(App.state.data, member.id, nameInput.value, member.grantedLeaveDays, member.employeeCode);
     });
     nameTd.appendChild(nameInput);
 
@@ -180,9 +180,19 @@ function renderMemberTable() {
     grantedInput.value = member.grantedLeaveDays;
     grantedInput.addEventListener("change", function () {
       var value = parseFloat(grantedInput.value) || 0;
-      Storage.updateMember(App.state.data, member.id, member.name, value);
+      Storage.updateMember(App.state.data, member.id, member.name, value, member.employeeCode);
     });
     grantedTd.appendChild(grantedInput);
+
+    var codeTd = document.createElement("td");
+    var codeInput = document.createElement("input");
+    codeInput.type = "text";
+    codeInput.value = member.employeeCode || "";
+    codeInput.placeholder = "職員コード";
+    codeInput.addEventListener("change", function () {
+      Storage.updateMember(App.state.data, member.id, member.name, member.grantedLeaveDays, codeInput.value.trim());
+    });
+    codeTd.appendChild(codeInput);
 
     var actionTd = document.createElement("td");
     var removeBtn = document.createElement("button");
@@ -196,6 +206,7 @@ function renderMemberTable() {
 
     tr.appendChild(nameTd);
     tr.appendChild(grantedTd);
+    tr.appendChild(codeTd);
     tr.appendChild(actionTd);
     tbody.appendChild(tr);
   });
@@ -204,12 +215,14 @@ function renderMemberTable() {
 function addMemberFromForm() {
   var nameInput = document.getElementById("newMemberName");
   var grantedInput = document.getElementById("newMemberGranted");
+  var codeInput = document.getElementById("newMemberCode");
   var name = nameInput.value.trim();
   if (!name) return;
   var granted = parseFloat(grantedInput.value) || 0;
-  Storage.addMember(App.state.data, name, granted);
+  Storage.addMember(App.state.data, name, granted, codeInput.value.trim());
   nameInput.value = "";
   grantedInput.value = "";
+  codeInput.value = "";
   renderMemberTable();
 }
 

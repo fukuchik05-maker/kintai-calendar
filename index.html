@@ -69,12 +69,13 @@
     <div class="modal">
       <h2>メンバー設定</h2>
       <table id="memberTable">
-        <thead><tr><th>氏名</th><th>有給付与日数</th><th></th></tr></thead>
+        <thead><tr><th>氏名</th><th>有給付与日数</th><th>職員コード</th><th></th></tr></thead>
         <tbody id="memberTableBody"></tbody>
       </table>
       <div class="add-member-row">
         <input type="text" id="newMemberName" placeholder="氏名">
         <input type="number" id="newMemberGranted" placeholder="付与日数" min="0" step="0.5">
+        <input type="text" id="newMemberCode" placeholder="職員コード(任意)">
         <button id="addMemberBtn">追加</button>
       </div>
       <div class="modal-actions">
