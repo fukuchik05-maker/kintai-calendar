@@ -28,11 +28,11 @@ function makeTimePart(text, isOvertime) {
   return span;
 }
 
-function initState() {
+async function initState() {
   var now = new Date();
   App.state.year = now.getFullYear();
   App.state.month = now.getMonth() + 1;
-  App.state.data = Storage.loadData();
+  App.state.data = await Storage.loadData();
 }
 
 function persistAndRerender() {

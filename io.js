@@ -49,13 +49,13 @@ function exportBackup() {
 
 function importBackupFile(file) {
   var reader = new FileReader();
-  reader.onload = function () {
+  reader.onload = async function () {
     try {
       var parsed = JSON.parse(reader.result);
       if (!parsed.members || !parsed.records) throw new Error("invalid format");
       if (!confirm("現在のデータを上書きして復元します。よろしいですか？")) return;
       App.state.data = parsed;
-      Storage.saveData(App.state.data);
+      await Storage.saveData(App.state.data);
       renderAll();
     } catch (e) {
       alert("読み込みに失敗しました。正しいバックアップファイルを選択してください。");

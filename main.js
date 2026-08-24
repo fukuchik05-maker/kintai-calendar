@@ -1,5 +1,5 @@
-document.addEventListener("DOMContentLoaded", function () {
-  initState();
+document.addEventListener("DOMContentLoaded", async function () {
+  await initState();
   syncViewModeUI();
   autoFillWeekdaysForCurrentMonth();
   renderAll();
