@@ -169,7 +169,6 @@ function renderMemberTable() {
     nameInput.value = member.name;
     nameInput.addEventListener("change", function () {
       Storage.updateMember(App.state.data, member.id, nameInput.value, member.grantedLeaveDays);
-      Storage.saveData(App.state.data);
     });
     nameTd.appendChild(nameInput);
 
@@ -182,7 +181,6 @@ function renderMemberTable() {
     grantedInput.addEventListener("change", function () {
       var value = parseFloat(grantedInput.value) || 0;
       Storage.updateMember(App.state.data, member.id, member.name, value);
-      Storage.saveData(App.state.data);
     });
     grantedTd.appendChild(grantedInput);
 
@@ -192,7 +190,6 @@ function renderMemberTable() {
     removeBtn.addEventListener("click", function () {
       if (!confirm(member.name + " を削除しますか？関連する記録も削除されます。")) return;
       Storage.removeMember(App.state.data, member.id);
-      Storage.saveData(App.state.data);
       renderMemberTable();
     });
     actionTd.appendChild(removeBtn);
@@ -211,7 +208,6 @@ function addMemberFromForm() {
   if (!name) return;
   var granted = parseFloat(grantedInput.value) || 0;
   Storage.addMember(App.state.data, name, granted);
-  Storage.saveData(App.state.data);
   nameInput.value = "";
   grantedInput.value = "";
   renderMemberTable();
