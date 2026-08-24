@@ -134,7 +134,13 @@ function renderGanttView() {
         titleParts.push(record.status);
       }
 
-      if (record && record.note) titleParts.push(record.note);
+      if (record && record.note) {
+        var cellNoteDiv = document.createElement("div");
+        cellNoteDiv.className = "gantt-cell-note";
+        cellNoteDiv.textContent = record.note;
+        td.appendChild(cellNoteDiv);
+        titleParts.push(record.note);
+      }
       if (titleParts.length > 0) td.title = titleParts.join(" / ");
 
       td.addEventListener("click", (function (dkClosure, memberIdClosure) {
