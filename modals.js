@@ -33,7 +33,7 @@ async function punchNow() {
 
   // ローカルのApp.state.dataがどれだけ古くても他の欄を消さないよう、Firestoreの現在値を
   // 取り直してから該当欄だけを更新する専用の経路(punchRecord)を使う。
-  var record = await Storage.punchRecord(App.state.data, todayKey, member.id, field, nowTime);
+  var record = await Storage.punchRecord(App.state.data, todayKey, member.id, member.name, field, nowTime, "button");
   if (!record) return;
 
   renderAll();
@@ -246,6 +246,69 @@ function renderVersionTab() {
   content.innerHTML =
     "<p>現在のバージョン: <strong>v" + APP_VERSION + "</strong></p>" +
     "<p>最終更新日: " + CHANGELOG[0].date + "</p>";
+}
+
+function formatPunchTimestamp(isoString) {
+  var d = new Date(isoString);
+  var mm = d.getMonth() + 1;
+  var dd = d.getDate();
+  var hh = pad2(d.getHours());
+  var mi = pad2(d.getMinutes());
+  return mm + "/" + dd + " " + hh + ":" + mi;
+}
+
+async function openPunchHistoryModal() {
+  var content = document.getElementById("punchHistoryContent");
+  content.textContent = "読み込み中...";
+  document.getElementById("punchHistoryModal").classList.remove("hidden");
+
+  var logs = await Storage.getPunchLogs();
+
+  content.innerHTML = "";
+
+  if (logs.length === 0) {
+    var emptyMsg = document.createElement("p");
+    emptyMsg.textContent = "まだ打刻履歴がありません。";
+    content.appendChild(emptyMsg);
+    return;
+  }
+
+  var table = document.createElement("table");
+  table.className = "summary-table";
+  var thead = document.createElement("thead");
+  thead.innerHTML = "<tr><th>打刻日時</th><th>対象日</th><th>氏名</th><th>種別</th><th>時刻</th><th>打刻元</th></tr>";
+  table.appendChild(thead);
+
+  var tbody = document.createElement("tbody");
+  logs.forEach(function (log) {
+    var tr = document.createElement("tr");
+
+    var cells = [
+      formatPunchTimestamp(log.timestamp),
+      log.dateKey,
+      log.memberName,
+      log.field === "clockIn" ? "出勤" : "退勤",
+      log.time,
+      log.source === "kiosk" ? "打刻ページ" : "打刻ボタン"
+    ];
+    cells.forEach(function (text) {
+      var td = document.createElement("td");
+      td.textContent = text;
+      tr.appendChild(td);
+    });
+
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+
+  var wrap = document.createElement("div");
+  wrap.className = "report-table-wrap";
+  wrap.appendChild(table);
+  content.appendChild(wrap);
+}
+
+function closePunchHistoryModal() {
+  document.getElementById("punchHistoryModal").classList.add("hidden");
 }
 
 function renderHistoryTab() {

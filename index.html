@@ -19,6 +19,7 @@
     <div class="app-title" id="appTitle"></div>
     <div class="actions">
       <button id="punchNowBtn">打刻</button>
+      <button id="punchHistoryBtn">打刻履歴</button>
       <button id="fillWeekdaysBtn">平日一括入力(8:30-17:30)</button>
       <button id="memberSettingsBtn">メンバー設定</button>
       <button id="reportBtn">月報</button>
@@ -96,6 +97,16 @@
       <div id="reportTrendContent" class="tab-content hidden"></div>
       <div class="modal-actions">
         <button id="reportCloseBtn">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="punchHistoryModal" class="modal-overlay hidden">
+    <div class="modal modal-wide">
+      <h2>打刻履歴</h2>
+      <div id="punchHistoryContent"></div>
+      <div class="modal-actions">
+        <button id="punchHistoryCloseBtn">閉じる</button>
       </div>
     </div>
   </div>

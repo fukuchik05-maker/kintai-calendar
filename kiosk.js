@@ -45,7 +45,7 @@ async function handleKioskScan(code) {
 
   // ローカルのkioskDataがどれだけ古くても他の欄を消さないよう、Firestoreの現在値を
   // 取り直してから該当欄だけを更新する専用の経路(punchRecord)を使う。
-  var record = await Storage.punchRecord(kioskData, todayKey, member.id, field, nowTime);
+  var record = await Storage.punchRecord(kioskData, todayKey, member.id, member.name, field, nowTime, "kiosk");
   if (!record) {
     focusKioskInput();
     return;

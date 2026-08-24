@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   document.getElementById("refreshBtn").addEventListener("click", refreshFromCloud);
   document.getElementById("fillWeekdaysBtn").addEventListener("click", fillWeekdaysForMonth);
   document.getElementById("punchNowBtn").addEventListener("click", punchNow);
+  document.getElementById("punchHistoryBtn").addEventListener("click", openPunchHistoryModal);
+  document.getElementById("punchHistoryCloseBtn").addEventListener("click", closePunchHistoryModal);
 
   document.getElementById("memberSettingsBtn").addEventListener("click", openMemberModal);
   document.getElementById("memberCloseBtn").addEventListener("click", closeMemberModal);

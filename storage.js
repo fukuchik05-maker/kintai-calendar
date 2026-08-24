@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import {
-  getFirestore, collection, doc, getDoc, getDocs, setDoc, deleteDoc
+  getFirestore, collection, doc, getDoc, getDocs, setDoc, deleteDoc, addDoc
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { FIREBASE_CONFIG } from "./firebase-config.js";
 
@@ -173,11 +173,27 @@ function setRecord(data, dateKey, memberId, record) {
   }).catch(function (err) { reportSaveError("記録保存", err); });
 }
 
+// 打刻ログ(punchLogs)への追記。打刻の成否には影響させたくないので失敗しても握りつぶす(コンソールにのみ記録)。
+function appendPunchLog(memberId, memberName, dateKey, field, time, source) {
+  addDoc(collection(db, "punchLogs"), {
+    memberId: memberId,
+    memberName: memberName,
+    dateKey: dateKey,
+    field: field,
+    time: time,
+    source: source,
+    timestamp: new Date().toISOString()
+  }).catch(function (err) {
+    console.error("打刻ログの記録に失敗しました:", err);
+  });
+}
+
 // 打刻専用: ローカルのキャッシュ(data)がどれだけ古くても、Firestoreの「今その瞬間の」
 // レコードを直接取得してから該当欄(clockIn または clockOut)だけを上書きする。
 // setRecord のようにローカルのコピーをそのまま丸ごと書き込むと、キャッシュが古い場合に
 // 他の端末が書いた値(例: 平日一括入力の出勤時刻)を消してしまうため、専用の安全な経路を用意する。
-async function punchRecord(data, dateKey, memberId, field, time) {
+// あわせて punchLogs に「いつ・誰が・どちらを・どこから」打刻したかの履歴を1件追加する。
+async function punchRecord(data, dateKey, memberId, memberName, field, time, source) {
   var docRef = doc(db, "records", recordDocId(dateKey, memberId));
   try {
     var snap = await getDoc(docRef);
@@ -204,11 +220,33 @@ async function punchRecord(data, dateKey, memberId, field, time) {
 
     if (!data.records[dateKey]) data.records[dateKey] = {};
     data.records[dateKey][memberId] = record;
+
+    appendPunchLog(memberId, memberName, dateKey, field, time, source);
+
     return record;
   } catch (err) {
     reportSaveError("打刻", err);
     return null;
   }
+}
+
+async function getPunchLogs() {
+  var snap = await getDocs(collection(db, "punchLogs"));
+  var logs = [];
+  snap.forEach(function (docSnap) {
+    var d = docSnap.data();
+    logs.push({
+      memberId: d.memberId,
+      memberName: d.memberName,
+      dateKey: d.dateKey,
+      field: d.field,
+      time: d.time,
+      source: d.source,
+      timestamp: d.timestamp
+    });
+  });
+  logs.sort(function (a, b) { return a.timestamp < b.timestamp ? 1 : -1; }); // 新しい順
+  return logs;
 }
 
 function deleteRecord(data, dateKey, memberId) {
@@ -250,6 +288,7 @@ window.Storage = {
   getRecord: getRecord,
   setRecord: setRecord,
   punchRecord: punchRecord,
+  getPunchLogs: getPunchLogs,
   deleteRecord: deleteRecord,
   getDayNote: getDayNote,
   setDayNote: setDayNote
