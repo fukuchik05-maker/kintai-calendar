@@ -48,6 +48,13 @@ function renderGanttView() {
     wdDiv.textContent = weekdayNames[weekday];
     th.appendChild(wdDiv);
 
+    if (holidayName) {
+      var holidayDiv = document.createElement("div");
+      holidayDiv.className = "gantt-holiday-name";
+      holidayDiv.textContent = holidayName;
+      th.appendChild(holidayDiv);
+    }
+
     var dayNote = Storage.getDayNote(App.state.data, dk);
     if (dayNote) {
       var noteParts = splitDayNoteTimeText(dayNote);

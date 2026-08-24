@@ -225,6 +225,16 @@ body {
   max-width: 52px;
   margin-top: 1px;
 }
+.gantt-holiday-name {
+  color: #b33;
+  font-weight: bold;
+  font-size: 9px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 52px;
+  margin-top: 1px;
+}
 .gantt-overtime-badge {
   color: #b34700;
   background: #fff0e0;
