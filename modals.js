@@ -191,6 +191,13 @@ function renderMemberTable() {
     codeTd.appendChild(codeInput);
 
     var actionTd = document.createElement("td");
+    var qrBtn = document.createElement("button");
+    qrBtn.textContent = "QR";
+    qrBtn.addEventListener("click", function () {
+      openQrModal(member);
+    });
+    actionTd.appendChild(qrBtn);
+
     var removeBtn = document.createElement("button");
     removeBtn.textContent = "削除";
     removeBtn.addEventListener("click", function () {
@@ -220,6 +227,41 @@ function addMemberFromForm() {
   grantedInput.value = "";
   codeInput.value = "";
   renderMemberTable();
+}
+
+// メンバーの職員コードを埋め込んだ打刻ページURLのQRコードを表示する。
+// iPhone等の標準カメラでこのQRを読み取ると、開くだけで自動的に打刻される(kiosk.js側で処理)。
+function openQrModal(member) {
+  if (!member.employeeCode) {
+    alert(member.name + "さんは職員コードが未設定です。先にメンバー設定で職員コードを入力してください。");
+    return;
+  }
+
+  var punchUrl = new URL("kiosk.html?code=" + encodeURIComponent(member.employeeCode), window.location.href).href;
+  var qrImageUrl = "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=" + encodeURIComponent(punchUrl);
+
+  document.getElementById("qrModalTitle").textContent = member.name + "さんの打刻QRコード";
+
+  var content = document.getElementById("qrModalContent");
+  content.innerHTML = "";
+
+  var img = document.createElement("img");
+  img.src = qrImageUrl;
+  img.width = 240;
+  img.height = 240;
+  img.alt = member.name + "さんの打刻QRコード";
+  content.appendChild(img);
+
+  var urlText = document.createElement("p");
+  urlText.className = "qr-url-text";
+  urlText.textContent = punchUrl;
+  content.appendChild(urlText);
+
+  document.getElementById("qrModal").classList.remove("hidden");
+}
+
+function closeQrModal() {
+  document.getElementById("qrModal").classList.add("hidden");
 }
 
 function openVersionModal() {

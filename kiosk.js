@@ -67,6 +67,16 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
   focusKioskInput();
 
+  // 個人QRコード(?code=職員コード)経由で開かれた場合、開いた瞬間に自動で打刻する。
+  // iPhone等の標準カメラでQRを読み取ってこのページを開くだけで完結させるための仕組み。
+  var params = new URLSearchParams(window.location.search);
+  var codeParam = params.get("code");
+  if (codeParam) {
+    handleKioskScan(codeParam);
+    // リロードで二重打刻されないよう、URLからパラメータを消しておく
+    history.replaceState(null, "", window.location.pathname);
+  }
+
   // 他端末での職員コード追加・変更を取りこぼさないよう、5分おきにメンバー一覧だけ再取得する
   setInterval(async function () {
     var fresh = await Storage.loadData();

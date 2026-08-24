@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   document.getElementById("memberSettingsBtn").addEventListener("click", openMemberModal);
   document.getElementById("memberCloseBtn").addEventListener("click", closeMemberModal);
   document.getElementById("addMemberBtn").addEventListener("click", addMemberFromForm);
+  document.getElementById("qrCloseBtn").addEventListener("click", closeQrModal);
 
   document.getElementById("reportBtn").addEventListener("click", openReportModal);
   document.getElementById("reportCloseBtn").addEventListener("click", closeReportModal);
