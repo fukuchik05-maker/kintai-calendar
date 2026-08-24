@@ -35,6 +35,11 @@ async function initState() {
   App.state.data = await Storage.loadData();
 }
 
+async function refreshFromCloud() {
+  App.state.data = await Storage.loadData();
+  renderAll();
+}
+
 function persistAndRerender() {
   Storage.saveData(App.state.data);
   renderAll();

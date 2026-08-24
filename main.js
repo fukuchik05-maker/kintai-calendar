@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   document.getElementById("nextMonthBtn").addEventListener("click", function () { changeMonth(1); });
   document.getElementById("todayBtn").addEventListener("click", goToToday);
   document.getElementById("viewToggleBtn").addEventListener("click", toggleViewMode);
+  document.getElementById("refreshBtn").addEventListener("click", refreshFromCloud);
   document.getElementById("fillWeekdaysBtn").addEventListener("click", fillWeekdaysForMonth);
   document.getElementById("punchNowBtn").addEventListener("click", punchNow);
 
