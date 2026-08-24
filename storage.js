@@ -59,8 +59,35 @@ async function loadData() {
 async function saveData(data) {
   // JSONバックアップの復元など、全データを丸ごと書き直す場合にのみ使う。
   // 通常の編集操作は setRecord 等が個別にFirestoreへ書き込むのでこれは呼ばれない。
+  // 新しいデータに存在しない古いドキュメントは削除し、Firestore側を新データに完全一致させる。
   try {
+    var newMemberIds = {};
+    data.members.forEach(function (m) { newMemberIds[m.id] = true; });
+    var newRecordIds = {};
+    Object.keys(data.records).forEach(function (dateKey) {
+      Object.keys(data.records[dateKey]).forEach(function (memberId) {
+        newRecordIds[recordDocId(dateKey, memberId)] = true;
+      });
+    });
+    var newDayNoteIds = {};
+    Object.keys(data.dayNotes).forEach(function (dateKey) { newDayNoteIds[dateKey] = true; });
+
+    var existingMembersSnap = await getDocs(collection(db, "members"));
+    var existingRecordsSnap = await getDocs(collection(db, "records"));
+    var existingDayNotesSnap = await getDocs(collection(db, "dayNotes"));
+
     var writes = [];
+
+    existingMembersSnap.forEach(function (docSnap) {
+      if (!newMemberIds[docSnap.id]) writes.push(deleteDoc(doc(db, "members", docSnap.id)));
+    });
+    existingRecordsSnap.forEach(function (docSnap) {
+      if (!newRecordIds[docSnap.id]) writes.push(deleteDoc(doc(db, "records", docSnap.id)));
+    });
+    existingDayNotesSnap.forEach(function (docSnap) {
+      if (!newDayNoteIds[docSnap.id]) writes.push(deleteDoc(doc(db, "dayNotes", docSnap.id)));
+    });
+
     data.members.forEach(function (m) {
       writes.push(setDoc(doc(db, "members", m.id), {
         name: m.name, grantedLeaveDays: m.grantedLeaveDays, employeeCode: m.employeeCode || ""
@@ -78,6 +105,7 @@ async function saveData(data) {
     Object.keys(data.dayNotes).forEach(function (dateKey) {
       writes.push(setDoc(doc(db, "dayNotes", dateKey), { text: data.dayNotes[dateKey] }));
     });
+
     await Promise.all(writes);
   } catch (err) {
     reportSaveError("全体保存", err);
