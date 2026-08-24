@@ -1,7 +1,7 @@
 // 「打刻」: 今この瞬間の時刻を、選んだ人の今日の出勤時刻または退勤時刻として記録する。
 // 平日は自動で8:30-17:30が入っているので、通常は使わず、早出・残業など実際の時刻が
 // 標準と違うときだけ使う想定(そのタイミングでボタンを押せば時刻を手入力しなくて済む)。
-function punchNow() {
+async function punchNow() {
   var members = App.state.data.members;
   if (members.length === 0) {
     alert("メンバーが登録されていません。先にメンバー設定から登録してください。");
@@ -29,18 +29,14 @@ function punchNow() {
   var now = new Date();
   var todayKey = dateKeyOf(now.getFullYear(), now.getMonth() + 1, now.getDate());
   var nowTime = pad2(now.getHours()) + ":" + pad2(now.getMinutes());
+  var field = isClockIn ? "clockIn" : "clockOut";
 
-  var existing = Storage.getRecord(App.state.data, todayKey, member.id);
-  var record = existing || { status: "出勤", clockIn: "", clockOut: "", breakMin: 60, hourlyLeaveHours: 0, note: "" };
-  record.status = "出勤";
-  if (isClockIn) {
-    record.clockIn = nowTime;
-  } else {
-    record.clockOut = nowTime;
-  }
+  // ローカルのApp.state.dataがどれだけ古くても他の欄を消さないよう、Firestoreの現在値を
+  // 取り直してから該当欄だけを更新する専用の経路(punchRecord)を使う。
+  var record = await Storage.punchRecord(App.state.data, todayKey, member.id, field, nowTime);
+  if (!record) return;
 
-  Storage.setRecord(App.state.data, todayKey, member.id, record);
-  persistAndRerender();
+  renderAll();
 
   alert(member.name + "さんの" + (isClockIn ? "出勤" : "退勤") + "を " + nowTime + " で記録しました。");
 }

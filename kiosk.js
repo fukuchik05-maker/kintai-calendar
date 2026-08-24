@@ -27,7 +27,7 @@ function focusKioskInput() {
   input.focus();
 }
 
-function handleKioskScan(code) {
+async function handleKioskScan(code) {
   var trimmed = code.trim();
   if (!trimmed) return;
 
@@ -43,12 +43,13 @@ function handleKioskScan(code) {
   var nowTime = pad2(now.getHours()) + ":" + pad2(now.getMinutes());
   var field = Calc.determinePunchField(now);
 
-  var existing = Storage.getRecord(kioskData, todayKey, member.id);
-  var record = existing || { status: "出勤", clockIn: "", clockOut: "", breakMin: 60, hourlyLeaveHours: 0, note: "" };
-  record.status = "出勤";
-  record[field] = nowTime;
-
-  Storage.setRecord(kioskData, todayKey, member.id, record);
+  // ローカルのkioskDataがどれだけ古くても他の欄を消さないよう、Firestoreの現在値を
+  // 取り直してから該当欄だけを更新する専用の経路(punchRecord)を使う。
+  var record = await Storage.punchRecord(kioskData, todayKey, member.id, field, nowTime);
+  if (!record) {
+    focusKioskInput();
+    return;
+  }
 
   var label = field === "clockIn" ? "出勤" : "退勤";
   showKioskMessage(member.name + "さん " + label + " " + nowTime + " を記録しました", false);

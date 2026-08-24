@@ -173,6 +173,44 @@ function setRecord(data, dateKey, memberId, record) {
   }).catch(function (err) { reportSaveError("記録保存", err); });
 }
 
+// 打刻専用: ローカルのキャッシュ(data)がどれだけ古くても、Firestoreの「今その瞬間の」
+// レコードを直接取得してから該当欄(clockIn または clockOut)だけを上書きする。
+// setRecord のようにローカルのコピーをそのまま丸ごと書き込むと、キャッシュが古い場合に
+// 他の端末が書いた値(例: 平日一括入力の出勤時刻)を消してしまうため、専用の安全な経路を用意する。
+async function punchRecord(data, dateKey, memberId, field, time) {
+  var docRef = doc(db, "records", recordDocId(dateKey, memberId));
+  try {
+    var snap = await getDoc(docRef);
+    var record;
+    if (snap.exists()) {
+      var d = snap.data();
+      record = {
+        status: "出勤",
+        clockIn: field === "clockIn" ? time : d.clockIn,
+        clockOut: field === "clockOut" ? time : d.clockOut,
+        breakMin: d.breakMin,
+        hourlyLeaveHours: d.hourlyLeaveHours,
+        note: d.note
+      };
+    } else {
+      record = { status: "出勤", clockIn: "", clockOut: "", breakMin: 60, hourlyLeaveHours: 0, note: "" };
+      record[field] = time;
+    }
+
+    await setDoc(docRef, {
+      date: dateKey, memberId: memberId, status: record.status, clockIn: record.clockIn, clockOut: record.clockOut,
+      breakMin: record.breakMin, hourlyLeaveHours: record.hourlyLeaveHours, note: record.note
+    });
+
+    if (!data.records[dateKey]) data.records[dateKey] = {};
+    data.records[dateKey][memberId] = record;
+    return record;
+  } catch (err) {
+    reportSaveError("打刻", err);
+    return null;
+  }
+}
+
 function deleteRecord(data, dateKey, memberId) {
   if (data.records[dateKey]) {
     delete data.records[dateKey][memberId];
@@ -211,6 +249,7 @@ window.Storage = {
   removeMember: removeMember,
   getRecord: getRecord,
   setRecord: setRecord,
+  punchRecord: punchRecord,
   deleteRecord: deleteRecord,
   getDayNote: getDayNote,
   setDayNote: setDayNote
