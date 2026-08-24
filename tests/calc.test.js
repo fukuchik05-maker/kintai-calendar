@@ -96,4 +96,12 @@ test("buildCsvContent builds header + rows joined by CRLF", function () {
   assert.strictEqual(lines[1], "2026-08-13,田中,出勤,08:30,17:30,60,0,8:00,0:00,");
 });
 
+test("determinePunchField returns clockIn before 8:30, clockOut otherwise", function () {
+  assert.strictEqual(Calc.determinePunchField(new Date(2026, 7, 13, 7, 0)), "clockIn");
+  assert.strictEqual(Calc.determinePunchField(new Date(2026, 7, 13, 8, 29)), "clockIn");
+  assert.strictEqual(Calc.determinePunchField(new Date(2026, 7, 13, 8, 30)), "clockOut");
+  assert.strictEqual(Calc.determinePunchField(new Date(2026, 7, 13, 12, 0)), "clockOut");
+  assert.strictEqual(Calc.determinePunchField(new Date(2026, 7, 13, 18, 0)), "clockOut");
+});
+
 console.log("calc.test.js done");

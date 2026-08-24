@@ -82,6 +82,12 @@
     return lines.join("\r\n");
   }
 
+  function determinePunchField(nowDate) {
+    var minutes = nowDate.getHours() * 60 + nowDate.getMinutes();
+    if (minutes < STANDARD_START_MIN) return "clockIn";
+    return "clockOut"; // 17:30より後の残業、および8:30〜17:30の間(早退扱い)はどちらもclockOut
+  }
+
   var api = {
     timeToMinutes: timeToMinutes,
     STANDARD_START_MIN: STANDARD_START_MIN,
@@ -93,7 +99,8 @@
     calcLeaveConsumedDays: calcLeaveConsumedDays,
     calcLeaveBalance: calcLeaveBalance,
     csvEscape: csvEscape,
-    buildCsvContent: buildCsvContent
+    buildCsvContent: buildCsvContent,
+    determinePunchField: determinePunchField
   };
 
   if (typeof module !== "undefined" && module.exports) {
