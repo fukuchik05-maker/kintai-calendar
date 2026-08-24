@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>打刻</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="kiosk-body">
+  <div class="kiosk-wrap">
+    <h1>打刻</h1>
+    <p>バーコードリーダーで職員コードを読み取ってください</p>
+    <input type="text" id="kioskInput" class="kiosk-input" autocomplete="off">
+    <div id="kioskMessage" class="kiosk-message"></div>
+  </div>
+
+  <script src="calc.js"></script>
+  <script type="module" src="storage.js"></script>
+  <script src="kiosk.js"></script>
+</body>
+</html>
