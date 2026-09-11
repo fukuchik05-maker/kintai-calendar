@@ -31,7 +31,7 @@ function computeMemberMonthStats(memberId, year, month) {
       stats.workDays += 1;
       var workMin = Calc.calcActualWorkMinutes(record.clockIn, record.clockOut, record.breakMin);
       if (workMin !== null) stats.workMinutes += workMin;
-      stats.overtimeMinutes += Calc.calcOvertimeMinutes(record.clockIn, record.clockOut, record.status);
+      stats.overtimeMinutes += Calc.calcOvertimeMinutes(record.clockIn, record.clockOut, record.status, isDateOff(dk), record.breakMin);
     }
     if (record.status === "欠勤") stats.absentDays += 1;
     stats.leaveDays += Calc.calcLeaveConsumedDays(record);

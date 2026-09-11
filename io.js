@@ -20,7 +20,7 @@ function exportCsv() {
       var record = Storage.getRecord(App.state.data, dk, member.id);
       if (!record) return;
       var workMin = Calc.calcActualWorkMinutes(record.clockIn, record.clockOut, record.breakMin);
-      var overtimeMin = Calc.calcOvertimeMinutes(record.clockIn, record.clockOut, record.status);
+      var overtimeMin = Calc.calcOvertimeMinutes(record.clockIn, record.clockOut, record.status, isDateOff(dk), record.breakMin);
       rows.push({
         date: dk,
         name: member.name,

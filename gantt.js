@@ -109,14 +109,15 @@ function renderGanttView() {
       var titleParts = [];
 
       if (record && record.status === "出勤" && record.clockIn && record.clockOut) {
-        var overtimeMin = Calc.calcOvertimeMinutes(record.clockIn, record.clockOut, record.status);
+        var isDayOff2 = weekday2 === 0 || weekday2 === 6 || !!holidayName2;
+        var overtimeMin = Calc.calcOvertimeMinutes(record.clockIn, record.clockOut, record.status, isDayOff2, record.breakMin);
         if (overtimeMin > 0) td.classList.add("gantt-overtime");
 
-        // 時間外(8:30より前 / 17:30より後)の側だけを色付けする(カレンダー表示と同じ挙動)
+        // 時間外(8:30より前 / 17:30より後)の側だけを色付けする(カレンダー表示と同じ挙動)。土日祝は両方とも色付けする。
         var inMin = Calc.timeToMinutes(record.clockIn);
         var outMin = Calc.timeToMinutes(record.clockOut);
-        var isEarly = inMin < Calc.STANDARD_START_MIN;
-        var isLate = outMin > Calc.STANDARD_END_MIN;
+        var isEarly = isDayOff2 || inMin < Calc.STANDARD_START_MIN;
+        var isLate = isDayOff2 || outMin > Calc.STANDARD_END_MIN;
 
         var inDiv = document.createElement("div");
         if (isEarly) inDiv.className = "gantt-time-overtime";

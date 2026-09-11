@@ -23,11 +23,17 @@
     return Math.floor(minutes / 15) * 15;
   }
 
-  function calcOvertimeMinutes(clockIn, clockOut, status) {
+  function calcOvertimeMinutes(clockIn, clockOut, status, isDayOff, breakMin) {
     if (status !== "出勤") return 0;
     if (!clockIn || !clockOut) return 0;
     var inMin = timeToMinutes(clockIn);
     var outMin = timeToMinutes(clockOut);
+    if (isDayOff) {
+      var span = outMin - inMin;
+      if (span < 0) return 0;
+      var effectiveBreak = span >= 8 * 60 ? (breakMin || 0) : 0;
+      return floorTo15(Math.max(span - effectiveBreak, 0));
+    }
     var early = inMin < STANDARD_START_MIN ? STANDARD_START_MIN - inMin : 0;
     var late = outMin > STANDARD_END_MIN ? outMin - STANDARD_END_MIN : 0;
     return floorTo15(early + late);

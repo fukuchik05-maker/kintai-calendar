@@ -54,6 +54,23 @@ test("calcOvertimeMinutes returns 0 when status is not 出勤 or times missing",
   assert.strictEqual(Calc.calcOvertimeMinutes("08:00", null, "出勤"), 0);
 });
 
+test("calcOvertimeMinutes: 休日は拘束時間が8時間未満なら休憩を引かず全部残業", function () {
+  assert.strictEqual(Calc.calcOvertimeMinutes("06:45", "09:15", "出勤", true, 0), 150);
+  assert.strictEqual(Calc.calcOvertimeMinutes("06:45", "09:15", "出勤", true, 60), 150); // 8時間未満なので休憩60分は無視
+});
+
+test("calcOvertimeMinutes: 休日で拘束8時間以上なら休憩を差し引く", function () {
+  assert.strictEqual(Calc.calcOvertimeMinutes("08:00", "18:00", "出勤", true, 60), 540); // 600分-60分
+});
+
+test("calcOvertimeMinutes: 休日で拘束8時間以上でも休憩0分なら差し引きなし", function () {
+  assert.strictEqual(Calc.calcOvertimeMinutes("08:00", "18:00", "出勤", true, 0), 600);
+});
+
+test("calcOvertimeMinutes: isDayOffを渡さなければ平日ルールのまま(後方互換)", function () {
+  assert.strictEqual(Calc.calcOvertimeMinutes("08:00", "18:00", "出勤"), 60); // 早出30+遅め30=60(既存ケースと同じ)
+});
+
 test("minutesToHoursLabel formats minutes as H:MM", function () {
   assert.strictEqual(Calc.minutesToHoursLabel(480), "8:00");
   assert.strictEqual(Calc.minutesToHoursLabel(30), "0:30");
