@@ -20,6 +20,12 @@ function daysInMonth(year, month) {
   return new Date(year, month, 0).getDate();
 }
 
+function isDateOff(dateKey) {
+  var parts = dateKey.split("-").map(Number);
+  var weekday = new Date(parts[0], parts[1] - 1, parts[2]).getDay();
+  return weekday === 0 || weekday === 6 || !!Holidays.isHoliday(dateKey);
+}
+
 function makeTimePart(text, isOvertime) {
   if (!isOvertime) return document.createTextNode(text);
   var span = document.createElement("span");
@@ -227,17 +233,17 @@ function renderCalendar() {
         memberRow.appendChild(document.createTextNode(member.name.charAt(0) + " "));
 
         if (record && record.status === "出勤" && record.clockIn && record.clockOut) {
-          // 時間外(8:30より前 / 17:30より後)の側だけを色付けする
+          // 時間外(8:30より前 / 17:30より後)の側だけを色付けする。土日祝は出退勤の両方を残業色にする。
           var inMin = Calc.timeToMinutes(record.clockIn);
           var outMin = Calc.timeToMinutes(record.clockOut);
-          var isEarly = inMin < Calc.STANDARD_START_MIN;
-          var isLate = outMin > Calc.STANDARD_END_MIN;
+          var isEarly = isDayOff || inMin < Calc.STANDARD_START_MIN;
+          var isLate = isDayOff || outMin > Calc.STANDARD_END_MIN;
 
           memberRow.appendChild(makeTimePart(record.clockIn, isEarly));
           memberRow.appendChild(document.createTextNode("-"));
           memberRow.appendChild(makeTimePart(record.clockOut, isLate));
 
-          var overtimeMin = Calc.calcOvertimeMinutes(record.clockIn, record.clockOut, record.status);
+          var overtimeMin = Calc.calcOvertimeMinutes(record.clockIn, record.clockOut, record.status, isDayOff, record.breakMin);
           if (overtimeMin > 0) {
             var overtimeSpan = document.createElement("span");
             overtimeSpan.className = "overtime-badge";
